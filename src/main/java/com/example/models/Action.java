@@ -1,45 +1,37 @@
 package com.example.models;
+import java.io.Console;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Random;
 public class Action {
 
-    public static Map<String, Integer> attackEnemy(String skill, Enemy enemy, Player player, Map<String, Skill> skills) {
-        Map<String, Integer> result = new HashMap<>();
+    public static AttackResponse attackEnemy(String skill, Enemy enemy, Player player, Map<String, Skill> skills) {
         if (!skills.containsKey(skill)) {
             System.out.println("Skill not found!");
-            result.put("Skill not found!", -1);
-            return result;
+            //AttackResponse(String error, int playerHp, int playerMp, int enemyHp, int maxUse, boolean victory, int gold, )
+            return new AttackResponse("Skill not found!",player.getHp(), player.getMp(), enemy.getHp(), 0, false, player.getGold());
         }
         if (skills.get(skill).getMaxUses() <= 0) {
-            System.out.println("No uses left for this skill!");
-            result.put("No uses left for this skill!", -1);
-            return result;
+            return new AttackResponse("No uses left for this skill!",player.getHp(), player.getMp(), enemy.getHp(), 0, false, player.getGold());
         }
         if (player.getMp() < skills.get(skill).getMpCost()) {
-            System.out.println("Not enough MP!");
-            result.put("Not enough MP!", -1);
-            return result;
+            return new AttackResponse("Not enough MP!",player.getHp(), player.getMp(), enemy.getHp(), skills.get(skill).getMaxUses(), false, player.getGold());
         }
         int damage = skills.get(skill).getDamage()+player.getAttack()+player.getBuff();
-        player.changeMp(skills.get(skill).getMpCost());
+        player.changeMp(-(skills.get(skill).getMpCost()));
         skills.get(skill).setMaxUses(skills.get(skill).getMaxUses() - 1);
         enemy.takeDamage(damage);
         System.out.println("Enemy takes " + damage + " damage! HP: " + enemy.getHp());
         if (enemy.getHp() == 0) {
             Random rand = new Random();
-            player.changeGold(5 + rand.nextInt(11)); // Reward between 5 to 15 gold
-            result.put("victory! Gold Get", player.getGold());
-            System.out.println("Enemy defeated!");
+            int goldGet = 5 + rand.nextInt(11);
+            player.changeGold(goldGet); // Reward between 5 to 15 gold
+            System.out.println("Victory");
             player.changeBuff("reset");
+            return new AttackResponse(null,player.getHp(), player.getMp(), 0, skills.get(skill).getMaxUses(), true ,player.getGold());
         } else {
-            result.put("Enemy Hp", enemy.getHp());
-            result.put("mp", player.getMp());
-            result.put("MaxUse", skills.get(skill).getMaxUses());
-            result.putAll(enemy.attackPlayer(player));
+            enemy.attackPlayer(player);
+            return new AttackResponse(null,player.getHp(), player.getMp(), enemy.getHp(), skills.get(skill).getMaxUses(), false,player.getGold());
         }
-
-        return result;
     }
 
     public static int useHealthPotion(Player player) {
@@ -55,6 +47,7 @@ public class Action {
     }
 
     public static int  useAttackPotion(Player player) {
+        System.out.println("Using StrengthPotion");
         if (player.getInventory().contains("StrengthPotion")) {
             player.changeBuff("StrengthPotion");
             player.getInventory().remove("StrengthPotion");

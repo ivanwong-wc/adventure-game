@@ -6,17 +6,13 @@ import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
 
 @Component
 public class Enemy {
 
     private int attack, hp;
-    private int level = 0;
 
-    @PostConstruct
-    public void setUp() {
-        level++;
+    public void setUp(int level) {
         Random rand = new Random();
         this.attack = (10 + level) * (rand.nextInt(3) + 1);
         this.hp = (25 + level) * (rand.nextInt(3) + 1);

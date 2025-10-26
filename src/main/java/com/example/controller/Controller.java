@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:8081") //link to front end 
 public class Controller {
 
     private Player player;
@@ -21,41 +24,30 @@ public class Controller {
 
 
     @PostMapping("/player/{character}")
-    public Map<String, Object> getPlayer(@PathVariable String character) {
+    public Player getPlayer(@PathVariable String character) {
         player = switch (character.toLowerCase()) {
             case "knight" -> new Knight();
             default -> throw new IllegalArgumentException("Unknown character: " + character);
         };
         player.setUp();
         System.out.println("Player created: " + character);
-        return Map.of(
-            "attack", player.getAttack(),
-            "hp", player.getHp(),
-            "mp", player.getMp(),
-            "gold", player.getGold(),
-            "luck", player.getLuck(),
-            "inventory", player.getInventory(),
-            "skills", player.getSkills()
-        );
+        return player;
     }
 
     @PostMapping("/enemy/{level}")
-    public Map<String, Integer> createEnemy(@PathVariable int level) {
-        enemy.setUp();
+    public Enemy createEnemy(@PathVariable int level) {
+        enemy.setUp(level);
         System.out.println("Enemy created at level: " + level);
-        return Map.of(
-            "hp", enemy.getHp(),
-             "attack", enemy.getAttack()
-        );
+        return enemy;
     }
 
     @PostMapping("/attack/{skill}")
-    public Map<String, Integer> attackEnemy(@PathVariable String skill) {
-        return player.attackEnemy(skill, enemy);
+    public AttackResponse attackEnemy(@PathVariable String skill) {
+        return player.attackEnemy(skill, enemy); 
     }
 
     @PostMapping("/items/{item}")
-    public int useItem(@PathVariable String item) {
+    public Player useItem(@PathVariable String item) {
         return player.useItem(item);
     }
     
@@ -66,22 +58,21 @@ public class Controller {
     }
 
     @PostMapping("/shop/{item}")
-    public int buyItem(@PathVariable String item) {
-        int goldLeft = shop.buyItem(item, player); //-1 means not enough gold or item not found not successful
-        return goldLeft;
+    public BuyResponse buyItem(@PathVariable String item) {
+        return shop.buyItem(item, player);
     }
 
     @GetMapping("/event")
     public Map<String, String> showEvent() {
     String eventKey = Event.getRandomEvent();  
     return Map.of(
-        "event", Event.eventList.get(eventKey),  
-        "key", eventKey
+        "key", eventKey,
+        "event", Event.eventList.get(eventKey)
     );
 }
 
     @PostMapping("/event/{key}/{choice}")
-    public Map<String, Object>makeChoice(@PathVariable String key, @PathVariable String choice) {
+    public EventResponse makeChoice(@PathVariable String key, @PathVariable String choice) {
         return Event.chooseEvent(key,choice,player);
     }
 

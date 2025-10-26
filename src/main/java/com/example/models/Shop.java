@@ -2,6 +2,9 @@ package com.example.models;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Shop {
 
     private Map<String, Integer> item = new HashMap<>();
@@ -10,7 +13,8 @@ public class Shop {
         for (int i = 0; i < 3; i++) {
             Random rand = new Random();
             switch (rand.nextInt(10)) {
-                case 1,8 -> this.item.put("Attack2ATK", 20);
+                case 1 -> this.item.put("Raise2ATK", 20);
+                case 0,8 -> this.item.put("Recover10MP", 15);
                 case 3,7 -> this.item.put("HealthPotion", 10);
                 case 4,5 -> this.item.put("StrengthPotion", 20);
                 case 2,6 -> this.item.put("MpPotion", 15);
@@ -28,19 +32,21 @@ public class Shop {
         this.item.clear();
     }
 
-    public int buyItem(String itemName, Player player) {
+    public BuyResponse buyItem(String itemName, Player player) {
         if (!item.containsKey(itemName)) {
-            System.out.println("Item not found!");
-            return -1;
+            return new BuyResponse("Item not found!", player);
         }
         int price = item.get(itemName);
         if (player.getGold() < price) {
-            System.out.println("Not enough gold!");
-            return -1;
+            return new BuyResponse("Not enough gold!", player);
         }
         player.changeGold(-price);
-        player.getInventory().add(itemName);
-        System.out.println("Bought " + itemName + "! Remaining Gold: " + player.getGold());
-        return player.getGold();
+        switch (itemName) {
+            case "Raise2ATK" -> player.changeAttack(2);
+            case "Health10HP" -> player.changeHp(10);
+            case "Recover10MP" -> player.changeMp(10);
+            default -> player.getInventory().add(itemName);
+        }
+        return new BuyResponse(null, player);
     }
 }

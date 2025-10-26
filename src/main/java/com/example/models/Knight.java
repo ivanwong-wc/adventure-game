@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Knight implements Player {
     private int attack;
     private int hp;
@@ -22,19 +19,19 @@ public class Knight implements Player {
     public void setUp() {
         this.attack = 5;
         this.hp = 100;
-        this.mp = 50;
+        this.mp = 60;
         this.gold = 20;
         this.luck = 0.5;
         this.inventory = new ArrayList<>();
         this.skills = new HashMap<>();
         inventory.add("StrengthPotion");
-        skills.put("Slash", new Skill(5, 0, 999)); // basic damage, mpCost, maxUses
-        skills.put("Power Strike", new Skill(10, 5, 20));
-        skills.put("Whirlwind", new Skill(15, 15, 5));  
+        skills.put("Slash", new Skill(10, 0, 999)); // basic damage, mpCost, maxUses
+        skills.put("Power Strike", new Skill(20, 5, 20));
+        skills.put("Whirlwind", new Skill(35, 15, 5));  
     }
 
     @Override
-    public Map<String, Integer> attackEnemy(String skill, Enemy enemy) {
+    public AttackResponse attackEnemy(String skill, Enemy enemy) {
         return Action.attackEnemy(skill, enemy, this, skills);
     }
 
@@ -46,14 +43,15 @@ public class Knight implements Player {
     }
 
     @Override
-    public int useItem(String item) {
-        int result = switch (item) {
+    public Player useItem(String item) {
+        System.out.println("Using item: " + item);
+        switch (item) {
             case "HealthPotion" -> Action.useHealthPotion( this);
             case "StrengthPotion" -> Action.useAttackPotion( this);
             case "MpPotion" -> Action.useMpPotion( this);
-            default -> -1;
-        };
-        return result;
+            default -> System.out.println("Item not found!");
+        }
+        return this;
     }
 
     @Override

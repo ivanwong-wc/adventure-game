@@ -21,15 +21,11 @@ public class Event {
         return keys[rand.nextInt(keys.length)];
     }
 
-    public static Map<String, Object> chooseEvent(String eventKey, String choice, Player player) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("event", eventList.get(eventKey));
-        result.put("choice", choice);
+    public static EventResponse chooseEvent(String eventKey, String choice, Player player) {
         if (choice.equals("no") ) {
-            result.put("success", false);
-            return result;
+            return new EventResponse(null, player.getHp(), player.getAttack(), player.getInventory(), player.getGold());
         }
-        result.put("success", switch (eventKey) {
+        String result = switch (eventKey) {
             case "charity" ->
                 handleCharity(player);
             case "merchant" ->
@@ -38,10 +34,9 @@ public class Event {
                 handleTreasure(player);
             case "fairy" ->
                 handleFairy(player);
-            default ->
-                false;
-        });
-        return result;
+            default -> "Invalid event.";
+        };
+        return new EventResponse(result, player.getHp(), player.getAttack(), player.getInventory(), player.getGold());
     }
 
     private static String handleCharity(Player player) {
@@ -49,7 +44,7 @@ public class Event {
             return "Not enough gold!";
         }
         player.changeGold(-5);
-        if (rand.nextDouble() < 0.7) {
+        if (rand.nextDouble() < 0.4 + player.getLuck() * 0.5) {
             player.changeLuck(0.1);
             return "+0.1 Luck!";
         } else {
@@ -59,15 +54,15 @@ public class Event {
 
     private static String handleMerchant(Player player) {
         if (player.getGold() >= 10) {
-            if (rand.nextDouble() < 0.3 && player.getGold() >= 10) {
+            if (rand.nextDouble() < 0.2 && player.getGold() >= 10) {
                 player.changeGold(-10);
                 player.getInventory().add("HealthPotion");
                 return "Got HealthPotion!";
-            } else if (rand.nextDouble() < 0.7 && !player.getInventory().isEmpty()) {
+            } else if (rand.nextDouble() < 0.5 && !player.getInventory().isEmpty()) {
                 player.getInventory().remove(rand.nextInt(player.getInventory().size()));
                 player.getInventory().add("MpPotion");
                 return "Got MpPotion but lost an item!";
-            } else if (rand.nextDouble() > 0.8 && player.getGold() >= 10) {
+            } else if (rand.nextDouble() < 0.8 && player.getGold() >= 10) {
                 player.changeGold(-10);
                 player.changeAttack(2);
                 return "Loss 10gold! Add Atkack 2!";
@@ -80,7 +75,6 @@ public class Event {
     }
 
     private static String handleTreasure(Player player) {
-        Random rand = new Random();
         if (rand.nextDouble() < 0.6) {
             player.changeGold(15);
             return "+15 Gold!";
@@ -91,7 +85,6 @@ public class Event {
     }
 
     private static String handleFairy(Player player) {
-        Random rand = new Random();
         if (rand.nextDouble() < 0.4 + player.getLuck() * 0.5) {
             player.getInventory().add("HealthPotion");
             return "Got HealthPotion!";
