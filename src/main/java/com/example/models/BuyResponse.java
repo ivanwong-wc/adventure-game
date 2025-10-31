@@ -3,7 +3,7 @@ package com.example.models;
 public class BuyResponse {
 
     private final String error;
-    private final Player player;
+    private  Player player;
 
     public BuyResponse(String error, Player player) {
         this.error = error;

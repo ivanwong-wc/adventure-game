@@ -1,5 +1,4 @@
 package com.example.models;
-import java.io.Console;
 import java.util.Map;
 import java.util.Random;
 public class Action {
@@ -7,18 +6,14 @@ public class Action {
     public static AttackResponse attackEnemy(String skill, Enemy enemy, Player player, Map<String, Skill> skills) {
         if (!skills.containsKey(skill)) {
             System.out.println("Skill not found!");
-            //AttackResponse(String error, int playerHp, int playerMp, int enemyHp, int maxUse, boolean victory, int gold, )
-            return new AttackResponse("Skill not found!",player.getHp(), player.getMp(), enemy.getHp(), 0, false, player.getGold());
-        }
-        if (skills.get(skill).getMaxUses() <= 0) {
-            return new AttackResponse("No uses left for this skill!",player.getHp(), player.getMp(), enemy.getHp(), 0, false, player.getGold());
+            //AttackResponse(String error, int playerHp, int playerMp, int enemyHp, boolean victory, int gold, )
+            return new AttackResponse("Skill not found!",player.getHp(), player.getMp(), enemy.getHp(), false, player.getGold());
         }
         if (player.getMp() < skills.get(skill).getMpCost()) {
-            return new AttackResponse("Not enough MP!",player.getHp(), player.getMp(), enemy.getHp(), skills.get(skill).getMaxUses(), false, player.getGold());
+            return new AttackResponse("Not enough MP!",player.getHp(), player.getMp(), enemy.getHp(), false, player.getGold());
         }
         int damage = skills.get(skill).getDamage()+player.getAttack()+player.getBuff();
         player.changeMp(-(skills.get(skill).getMpCost()));
-        skills.get(skill).setMaxUses(skills.get(skill).getMaxUses() - 1);
         enemy.takeDamage(damage);
         System.out.println("Enemy takes " + damage + " damage! HP: " + enemy.getHp());
         if (enemy.getHp() == 0) {
@@ -27,10 +22,10 @@ public class Action {
             player.changeGold(goldGet); // Reward between 5 to 15 gold
             System.out.println("Victory");
             player.changeBuff("reset");
-            return new AttackResponse(null,player.getHp(), player.getMp(), 0, skills.get(skill).getMaxUses(), true ,player.getGold());
+            return new AttackResponse(null,player.getHp(), player.getMp(), 0, true ,player.getGold());
         } else {
             enemy.attackPlayer(player);
-            return new AttackResponse(null,player.getHp(), player.getMp(), enemy.getHp(), skills.get(skill).getMaxUses(), false,player.getGold());
+            return new AttackResponse(null,player.getHp(), player.getMp(), enemy.getHp(), false,player.getGold());
         }
     }
 
@@ -60,7 +55,7 @@ public class Action {
     }
     public static int  useMpPotion(Player player) {
         if (player.getInventory().contains("MpPotion")) {
-            player.changeMp(5);
+            player.changeMp(15);
             player.getInventory().remove("MpPotion");
             System.out.println("Now Mp: " + player.getMp());
             return player.getMp();

@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.models.*;
+import com.example.character.*;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,22 +19,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 @CrossOrigin(origins = "http://localhost:8081") //link to front end 
 public class Controller {
 
-    private Player player;
+    private Player player = new Player();
     private Enemy enemy = new Enemy();
     private final Shop shop = new Shop();
 
 
     @PostMapping("/player/{character}")
     public Player getPlayer(@PathVariable String character) {
-        player = switch (character.toLowerCase()) {
-            case "knight" -> new Knight();
-            default -> throw new IllegalArgumentException("Unknown character: " + character);
-        };
-        player.setUp();
+        player.setUpCharacter(character);
         System.out.println("Player created: " + character);
         return player;
     }
-
+    
     @PostMapping("/enemy/{level}")
     public Enemy createEnemy(@PathVariable int level) {
         enemy.setUp(level);

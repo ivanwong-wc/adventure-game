@@ -8,6 +8,7 @@ class AdventureGameApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 
 }
