@@ -12,21 +12,19 @@ public class Enemy {
 
     private int attack, hp;
 
-    public void setUp(int level) {
-        Random rand = new Random();
+    public void setUp(int level, Random rand) {
         this.attack = (10 + level) * (rand.nextInt(3) + 1);
         this.hp = (25 + level) * (rand.nextInt(3) + 1);
     }
 
-    public Map<String, Integer> attackPlayer(Player player) {
-        Random rand = new Random();
+    public Map<String, Integer> attackPlayer(Player player, Boolean evades) {
         Map<String, Integer> result = new HashMap<>();
-        if (player.getLuck() * rand.nextDouble() > 0.5 * rand.nextDouble() + 0.1) {
+        if (evades) {
             System.out.println("Player evades the attack!");
             result.put("evades", player.getHp());
             return result;
         } else {
-            int ack = (int) Math.ceil(this.attack * (1 - player.getLuck() * rand.nextDouble()));
+            int ack = this.attack;
             int remainingHp = player.takeDamage(ack);
             System.out.println("Player takes " + ack + " damage! HP: " + remainingHp);
             if(remainingHp == 0){

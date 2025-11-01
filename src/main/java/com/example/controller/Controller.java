@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @CrossOrigin(origins = "http://localhost:8081") //link to front end 
 public class Controller {
 
-    private Player player = new Player();
-    private Enemy enemy = new Enemy();
+    private final Player player = new Player();
+    private final Enemy enemy = new Enemy();
     private final Shop shop = new Shop();
 
 
@@ -33,7 +34,8 @@ public class Controller {
     
     @PostMapping("/enemy/{level}")
     public Enemy createEnemy(@PathVariable int level) {
-        enemy.setUp(level);
+        Random rand = new Random();
+        enemy.setUp(level, rand);
         System.out.println("Enemy created at level: " + level);
         return enemy;
     }
@@ -71,14 +73,6 @@ public class Controller {
     @PostMapping("/event/{key}/{choice}")
     public EventResponse makeChoice(@PathVariable String key, @PathVariable String choice) {
         return Event.chooseEvent(key,choice,player);
-    }
-
-
-    @PostMapping("/restart")
-    public void restart() {
-        enemy = null;
-        player =null;
-        System.out.println("Game restarted.");
     }
 
 }
