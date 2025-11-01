@@ -12,9 +12,9 @@ public class Enemy {
 
     private int attack, hp;
 
-    public void setUp(int level, Random rand) {
-        this.attack = (10 + level) * (rand.nextInt(3) + 1);
-        this.hp = (25 + level) * (rand.nextInt(3) + 1);
+    public void setUp(int level,int attackMultiplier, int hpMultiplier) {
+        this.attack = (10 + level) * (attackMultiplier + 1);
+        this.hp = (25 + level) * (hpMultiplier + 1);
     }
 
     public Map<String, Integer> attackPlayer(Player player, Boolean evades) {

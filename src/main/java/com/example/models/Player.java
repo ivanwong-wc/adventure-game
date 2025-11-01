@@ -15,7 +15,6 @@ public class Player{
     private int buff=0;
     private Character character;
 
-
     public void setUpCharacter(String characterType) {
         CharacterSetUp.setupPlayer(this, characterType);
     }

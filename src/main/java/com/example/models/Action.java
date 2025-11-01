@@ -19,8 +19,7 @@ public class Action {
         enemy.takeDamage(damage);
         System.out.println("Enemy takes " + damage + " damage! HP: " + enemy.getHp());
         if (enemy.getHp() == 0) {
-            Random rand = new Random();
-            int goldGet = 5 + rand.nextInt(11);
+            int goldGet = 5 + extraMoney();
             player.changeGold(goldGet); // Reward between 5 to 15 gold
             System.out.println("Victory");
             player.changeBuff("reset");
@@ -35,6 +34,11 @@ public class Action {
     public static Boolean checkEvades(Player player) {
         Random rand = new Random();
         return player.getLuck() * rand.nextDouble() > 0.5 * rand.nextDouble() + 0.1;
+    }
+
+    public static int extraMoney(){
+        Random rand = new Random();
+        return rand.nextInt(11);
     }
 
     public static int useHealthPotion(Player player) {

@@ -35,7 +35,7 @@ public class Controller {
     @PostMapping("/enemy/{level}")
     public Enemy createEnemy(@PathVariable int level) {
         Random rand = new Random();
-        enemy.setUp(level, rand);
+        enemy.setUp(level, rand.nextInt(3), rand.nextInt(3));
         System.out.println("Enemy created at level: " + level);
         return enemy;
     }
