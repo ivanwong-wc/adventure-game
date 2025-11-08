@@ -54,7 +54,6 @@ public class Action {
     }
 
     public static int useAttackPotion(Player player) {
-        System.out.println("Using StrengthPotion");
         if (player.getInventory().contains("StrengthPotion")) {
             player.changeBuff("StrengthPotion");
             player.getInventory().remove("StrengthPotion");

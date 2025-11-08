@@ -17,4 +17,23 @@ public class AttackResponse {
         this.victory = victory;
         this.gold = gold;
     }
+        
+    public String getError() {
+        return error;
+    }
+    public int getPlayerHp() {
+        return playerHp;
+    }
+    public int getPlayerMp() {
+        return playerMp;
+    }
+    public int getEnemyHp() {
+        return enemyHp;
+    }
+    public boolean isVictory() {
+        return victory;
+    }
+    public int getGold() {
+        return gold;
+    }
 }
