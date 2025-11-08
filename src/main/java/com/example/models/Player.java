@@ -107,7 +107,7 @@ public class Player{
     }
 
     public int changeGold(int g) {
-        this.gold += g;
+        this.gold = Math.max(0,this.gold+g);
         return this.gold;
     }
 

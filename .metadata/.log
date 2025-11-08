@@ -1,0 +1,52 @@
+!SESSION 2025-11-02 02:03:39.367 -----------------------------------------------
+eclipse.buildId=4.36.0.20250605-1300
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=zh_HK_#Hant
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/ivan_wong/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -product org.eclipse.epp.package.java.product -keyring /Users/ivan_wong/.eclipse_keyring
+
+!ENTRY ch.qos.logback.classic 1 0 2025-11-02 02:03:40.786
+!MESSAGE Activated before the state location was initialized. Retry after the state location is initialized.
+
+!ENTRY ch.qos.logback.classic 1 0 2025-11-02 02:03:55.588
+!MESSAGE Logback config file: /Users/ivan_wong/Documents/adventure-game/.metadata/.plugins/org.eclipse.m2e.logback/logback.2.7.100.20250418-1315.xml
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-02 02:03:58.402
+!MESSAGE [Info] Starting language server with binary lsp agent.
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-02 02:03:58.403
+!MESSAGE [Info] Found native binary in fragment bundle: com.microsoft.copilot.eclipse.core.agent.macosx.aarch64
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-02 02:03:59.253
+!MESSAGE [Info] Lsp agent started successfully.
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-11-02 02:04:00.320
+!MESSAGE [Info]	[lsp] GitHub Copilot Language Server 1.363.0 initialized
+
+!ENTRY org.eclipse.lsp4e 1 0 2025-11-02 02:04:00.515
+!MESSAGE [Info]	[certificates] Removed 4 expired certificates
+
+!ENTRY org.eclipse.jface 2 0 2025-11-02 14:02:45.568
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2025-11-02 14:02:45.568
+!MESSAGE A conflict occurred for ALT+COMMAND+/:
+Binding(ALT+COMMAND+/,
+	ParameterizedCommand(Command(org.eclipse.ui.edit.text.hippieCompletion,Word Completion,
+		Context insensitive completion,
+		Category(org.eclipse.ui.category.edit,Edit,null,true),
+		WorkbenchHandlerServiceHandler("org.eclipse.ui.edit.text.hippieCompletion"),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.textEditorScope,zh,,system)
+Binding(ALT+COMMAND+/,
+	ParameterizedCommand(Command(com.microsoft.copilot.eclipse.commands.triggerInlineSuggestion,Trigger Inline Suggestion,
+		,
+		Category(com.microsoft.copilot.eclipse.ui.githubCopilot,GitHub Copilot,null,true),
+		WorkbenchHandlerServiceHandler("com.microsoft.copilot.eclipse.commands.triggerInlineSuggestion"),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.textEditorScope,,,system)
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-02 14:06:02.887
+!MESSAGE [Info] Completion handler is refreshed for the document: file:///Users/ivan_wong/Documents/adventure-game副本/src/test/java/com/example/adventure_game/ShopTest.java
