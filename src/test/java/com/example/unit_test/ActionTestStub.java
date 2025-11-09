@@ -14,7 +14,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ActionStubTest {
+public class ActionTestStub {
 
     static class PlayerStub extends Player {
         public PlayerStub() {
@@ -36,7 +36,6 @@ public class ActionStubTest {
                 field.setAccessible(true);
                 field.set(this, value);
             } catch (Exception e) {
-                e.printStackTrace();
                 throw new RuntimeException(e);
             }
         }
@@ -107,8 +106,8 @@ public class ActionStubTest {
 
     @Test
     public void testUseAttackPotionUnsuccessful() {
-        Action.useHealthPotion(playerStub);
-        assertEquals(-1, Action.useHealthPotion(playerStub));
+        Action.useAttackPotion(playerStub);
+        assertEquals(-1, Action.useAttackPotion(playerStub));
     }
 
     @Test
@@ -120,8 +119,8 @@ public class ActionStubTest {
 
     @Test
     public void testUseMpPotionUnsuccessful() {
-        Action.useHealthPotion(playerStub);
-        assertEquals(-1, Action.useHealthPotion(playerStub));
+        Action.useMpPotion(playerStub);
+        assertEquals(-1, Action.useMpPotion(playerStub));
     }
 
     @Test

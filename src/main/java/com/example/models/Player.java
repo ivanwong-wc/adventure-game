@@ -30,19 +30,19 @@ public class Player{
         this.skills = character.getSkills();
     }
 
-    public AttackResponse attackEnemy(String skill, Enemy enemy) {
-        return Action.attackEnemy(skill, enemy, this, skills);
+    public AttackResponse attackEnemy(String s, Enemy e) {
+        return Action.attackEnemy(s, e, this, skills);
     }
 
-    public int takeDamage(int damage) {
-        this.hp = Math.max(0, this.hp - damage);
+    public int takeDamage(int i) {
+        this.hp = Math.max(0, this.hp - i);
         System.out.println("Current HP of Knight: " + hp);
         return hp;
     }
 
-    public Player useItem(String item) {
-        System.out.println("Using item: " + item);
-        switch (item) {
+    public Player useItem(String s) {
+        System.out.println("Using item: " + s);
+        switch (s) {
             case "HealthPotion" -> Action.useHealthPotion( this);
             case "StrengthPotion" -> Action.useAttackPotion( this);
             case "MpPotion" -> Action.useMpPotion( this);

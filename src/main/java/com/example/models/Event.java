@@ -7,7 +7,7 @@ import java.util.Random;
 public class Event {
 
     public static final Map<String, String> eventList = new HashMap<>();
-    private static final Random rand = new Random();
+    private static Random rand = new Random();
 
     static {
         eventList.put("charity", "A child asks for 5 gold? Give it?");
@@ -55,7 +55,7 @@ public class Event {
 
     private static String handleMerchant(Player player, double rateOfSuccess) {
         if (player.getGold() >= 10) {
-            if (rateOfSuccess < 0.2 && player.getGold() >= 10) {
+            if (rateOfSuccess < 0.2 ) {
                 player.changeGold(-10);
                 player.getInventory().add("HealthPotion");
                 return "Got HealthPotion!";
@@ -63,7 +63,7 @@ public class Event {
                 player.getInventory().remove(rand.nextInt(player.getInventory().size()));
                 player.getInventory().add("MpPotion");
                 return "Got MpPotion but lost an item!";
-            } else if (rateOfSuccess < 0.8 && player.getGold() >= 10) {
+            } else if (rateOfSuccess < 0.8) {
                 player.changeGold(-10);
                 player.changeAttack(2);
                 return "Loss 10gold! Add Atkack 2!";
@@ -93,5 +93,14 @@ public class Event {
             player.changeAttack(-2);
             return "Greedy Human! As a beacutiful fairy, -2 ATK permanent!";
         }
+    }
+
+
+    //Create for testing purpose
+    public static void setRandom(Random random) {
+        Event.rand = random;
+    }
+    public static void resetRandom() {
+        Event.rand = new Random();
     }
 }
