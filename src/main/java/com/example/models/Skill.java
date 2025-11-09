@@ -9,7 +9,6 @@ public class Skill {
         this.mpCost = mpCost;
     }
 
-    // Getter methods
     public int getDamage() { return damage; }
     public int getMpCost() { return mpCost; }
 }

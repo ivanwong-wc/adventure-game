@@ -22,24 +22,16 @@ public class EventTest {
         private int gold = 100;
         private double luck = 0.5;
         private final List<String> inventory = new ArrayList<>();
-        @Override
-        public int getHp() { return hp; }
-        @Override
-        public int getAttack() { return attack; }
-        @Override
-        public int getGold() { return gold; }
-        @Override
-        public double getLuck() { return luck; }
-        @Override
-        public List<String> getInventory() { return inventory; }
-        @Override
-        public int changeGold(int g) { gold += g; return gold; }
-        @Override
-        public double changeLuck(double d) { luck = d; return luck; }
-        @Override
-        public int changeAttack(int i) { attack += i; return attack; }
-        @Override
-        public int takeDamage(int d) { hp = Math.max(0, hp - d); return hp; }
+        @Override public int getHp() { return hp; }
+        @Override public int getAttack() { return attack; }
+        @Override public int getGold() { return gold; }
+        @Override public double getLuck() { return luck; }
+        @Override public List<String> getInventory() { return inventory; }
+
+        @Override public int changeGold(int g) { gold += g; return gold; }
+        @Override public double changeLuck(double d) { luck = d; return luck; }
+        @Override public int changeAttack(int i) { attack += i; return attack; }
+        @Override public int takeDamage(int d) { hp = Math.max(0, hp - d); return hp; }
     }
     
 
@@ -263,6 +255,49 @@ public class EventTest {
         assertEquals("-5 HP! Trap!", response.getMessage());
         assertEquals((oldHp-5), response.getPlayerHp());
         assertEquals(oldAttack, response.getPlayerAttack());
+        assertEquals(oldInventory, response.getInventory());
+        assertEquals(oldGold, response.getGold());
+    }
+
+
+    @Test
+    public void testFairyGood() {
+        PlayerEventStub player = new PlayerEventStub();
+        int oldHp = player.getHp();
+        int oldAttack = player.getAttack();
+        List<String> oldInventory = new ArrayList<>(player.inventory);
+        int oldGold = player.getGold();
+        player.changeLuck(100);
+        EventResponse response = null;
+        Event.setRandom(new Random() {
+            @Override 
+            public double nextDouble() { return 0; } 
+        });
+        response = Event.chooseEvent("fairy", "yes", player);
+        assertEquals("Got HealthPotion!", response.getMessage());
+        assertEquals(oldHp, response.getPlayerHp());
+        assertEquals(oldAttack, response.getPlayerAttack());
+        oldInventory.add("HealthPotion");
+        assertEquals(oldInventory, response.getInventory());
+        assertEquals(oldGold, response.getGold());
+    }
+
+    @Test
+    public void testFairyeBad() {
+        PlayerEventStub player = new PlayerEventStub();
+        int oldHp = player.getHp();
+        int oldAttack = player.getAttack();
+        List<String> oldInventory = new ArrayList<>(player.inventory);
+        int oldGold = player.getGold();
+        EventResponse response = null;
+        Event.setRandom(new Random() {
+            @Override 
+            public double nextDouble() { return 10; } 
+        });
+        response = Event.chooseEvent("fairy", "yes", player);
+        assertEquals("Greedy Human! As a beacutiful fairy, -2 ATK permanent!", response.getMessage());
+        assertEquals(oldHp, response.getPlayerHp());
+        assertEquals((oldAttack-2), response.getPlayerAttack());
         assertEquals(oldInventory, response.getInventory());
         assertEquals(oldGold, response.getGold());
     }
