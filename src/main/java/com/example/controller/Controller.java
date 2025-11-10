@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.models.*;
-import com.example.character.*;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
