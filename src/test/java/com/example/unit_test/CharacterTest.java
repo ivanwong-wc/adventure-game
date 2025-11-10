@@ -1,4 +1,4 @@
-package com.example.integration_test;
+package com.example.unit_test;
 
 import com.example.models.Player;
 import org.junit.jupiter.api.Test;
