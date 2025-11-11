@@ -134,14 +134,14 @@ public class ActionTestStub {
     @Test
     public void testAttackEnemySkillNotFound() {
         AttackResponse ar =  Action.attackEnemy("aaaaaaaaaaa", enemyStub, playerStub, playerStub.getSkills());
-        assertEquals("Skill not found!", ar.getError()); 
+        assertEquals("Skill not found!", ar.getMessage()); 
     }
 
     @Test
     public void testAttackEnemyMpNotEnough() {
         playerStub.changeMp(-100);
         AttackResponse ar =  Action.attackEnemy("Punch", enemyStub, playerStub, playerStub.getSkills());
-        assertEquals("Not enough MP!", ar.getError()); 
+        assertEquals("Not enough MP!", ar.getMessage()); 
     }
     
     @Test
@@ -151,7 +151,7 @@ public class ActionTestStub {
         int original_Player_Hp = playerStub.getHp();
         int original_gold = playerStub.getGold();
         AttackResponse ar =  Action.attackEnemy("Punch", enemyStub, playerStub, playerStub.getSkills());
-        assertNull( ar.getError()); 
+        assertNull( ar.getMessage()); 
         assertEquals(original_Player_Hp, ar.getPlayerHp());
         assertEquals(0, ar.getEnemyHp()); 
         assertTrue(ar.isVictory());
@@ -164,7 +164,7 @@ public class ActionTestStub {
         int original_Player_Hp = playerStub.getHp();
         int original_gold = playerStub.getGold();
         AttackResponse ar =  Action.attackEnemy("Punch", enemyStub, playerStub, playerStub.getSkills());
-        assertNull( ar.getError()); 
+        assertTrue( "success Evades".equals(ar.getMessage()) || "hurt".equals(ar.getMessage()));
         assertEquals(original_Player_Hp - enemyStub.getAttack(), ar.getPlayerHp());
         assertTrue( ar.getEnemyHp()>0); 
         assertFalse(ar.isVictory());

@@ -13,7 +13,7 @@ public class AttackResponseTest {
     @Test
     public void testCreateAttackResponseWithError() {
         AttackResponse attackResponse = new AttackResponse("error",1,2,3,false, 10);
-        assertEquals("error", attackResponse.getError());
+        assertEquals("error", attackResponse.getMessage());
         assertEquals(1, attackResponse.getPlayerHp());
         assertEquals(2, attackResponse.getPlayerMp());   
         assertEquals(3, attackResponse.getEnemyHp());
@@ -24,7 +24,7 @@ public class AttackResponseTest {
     @Test
     public void testCreateAttackResponseWithSucces() {
         AttackResponse attackResponse = new AttackResponse(null,1,2,0,true, 10);
-        assertNull(attackResponse.getError());
+        assertNull(attackResponse.getMessage());
         assertEquals(1, attackResponse.getPlayerHp());
         assertEquals(2, attackResponse.getPlayerMp());   
         assertEquals(0, attackResponse.getEnemyHp());

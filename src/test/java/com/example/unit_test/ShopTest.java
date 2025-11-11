@@ -22,7 +22,7 @@ public class ShopTest {
         shop.setItemInShop();
         Map<String, Integer> items = shop.getItemList();
         assertFalse(items.isEmpty(), "Shop should have items after setup");
-        assertTrue(items.size() <= 3, "Shop should have 3 items");
+        assertTrue(items.size() == 3, "Shop should have 3 items");
     }
 
     @Test

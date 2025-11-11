@@ -26,8 +26,10 @@ public class Action {
             return new AttackResponse(null, player.getHp(), player.getMp(), 0, true, player.getGold());
         } else {
             //enemy.attackPlayer(player);
-            enemy.attackPlayer(player, checkEvades(player));
-            return new AttackResponse(null, player.getHp(), player.getMp(), enemy.getHp(), false, player.getGold());
+            boolean evades = checkEvades(player);
+            String message = evades? "success Evades" : "hurt";
+            enemy.attackPlayer(player, evades);
+            return new AttackResponse(message, player.getHp(), player.getMp(), enemy.getHp(), false, player.getGold());
         }
     }
 

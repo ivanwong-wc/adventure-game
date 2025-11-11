@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @CrossOrigin(origins = "http://localhost:8081") //link to front end 
 public class Controller {
 
-    private final Player player = new Player();
-    private final Enemy enemy = new Enemy();
-    private final Shop shop = new Shop();
+    private Player player = new Player();
+    private Enemy enemy = new Enemy();
+    private Shop shop = new Shop();
 
 
     @PostMapping("/player/{character}")
