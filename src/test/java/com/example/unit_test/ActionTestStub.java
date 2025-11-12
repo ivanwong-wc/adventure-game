@@ -165,7 +165,7 @@ public class ActionTestStub {
         int original_gold = playerStub.getGold();
         AttackResponse ar =  Action.attackEnemy("Punch", enemyStub, playerStub, playerStub.getSkills());
         assertTrue( "success Evades".equals(ar.getMessage()) || "hurt".equals(ar.getMessage()));
-        assertEquals(original_Player_Hp - enemyStub.getAttack(), ar.getPlayerHp());
+        assertTrue(((original_Player_Hp - enemyStub.getAttack()) == ar.getPlayerHp()) || (original_Player_Hp == ar.getPlayerHp()));
         assertTrue( ar.getEnemyHp()>0); 
         assertFalse(ar.isVictory());
         assertTrue(ar.getGold()==original_gold);

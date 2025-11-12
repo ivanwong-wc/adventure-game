@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="ShopTest" project="adventure-game" tests="5" started="5" failures="0" errors="0" ignored="0">
-  <testsuite name="com.example.ShopTest" time="0.016" displayname="ShopTest" uniqueid="[engine:junit-jupiter]/[class:com.example.ShopTest]">
-    <testcase name="testBuyItemSuccess" classname="com.example.ShopTest" time="0.012" displayname="testBuyItemSuccess()" uniqueid="[engine:junit-jupiter]/[class:com.example.ShopTest]/[method:testBuyItemSuccess()]"/>
-    <testcase name="testCleanShop" classname="com.example.ShopTest" time="0.001" displayname="testCleanShop()" uniqueid="[engine:junit-jupiter]/[class:com.example.ShopTest]/[method:testCleanShop()]"/>
-    <testcase name="testBuyItemNotFound" classname="com.example.ShopTest" time="0.002" displayname="testBuyItemNotFound()" uniqueid="[engine:junit-jupiter]/[class:com.example.ShopTest]/[method:testBuyItemNotFound()]"/>
-    <testcase name="testSetItemInShop" classname="com.example.ShopTest" time="0.001" displayname="testSetItemInShop()" uniqueid="[engine:junit-jupiter]/[class:com.example.ShopTest]/[method:testSetItemInShop()]"/>
-    <testcase name="testBuyItemNotEnoughGold" classname="com.example.ShopTest" time="0.0" displayname="testBuyItemNotEnoughGold()" uniqueid="[engine:junit-jupiter]/[class:com.example.ShopTest]/[method:testBuyItemNotEnoughGold()]"/>
-  </testsuite>
-</testrun>

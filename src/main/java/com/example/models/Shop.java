@@ -10,7 +10,7 @@ public class Shop {
     private Map<String, Integer> item = new HashMap<>();
 
     public void setItemInShop() {
-        while (item.size()<3){
+        while (item.size()<2){
             Random rand = new Random();
             switch (rand.nextInt(10)) {
                 case 1 -> this.item.put("Raise2ATK", 20);

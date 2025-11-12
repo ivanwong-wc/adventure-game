@@ -50,3 +50,53 @@ Binding(ALT+COMMAND+/,
 
 !ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-02 14:06:02.887
 !MESSAGE [Info] Completion handler is refreshed for the document: file:///Users/ivan_wong/Documents/adventure-game副本/src/test/java/com/example/adventure_game/ShopTest.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.796
+!MESSAGE [Info] Document is null for editor: AdventureGameApplicationTests.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.798
+!MESSAGE [Info] Completion handler is refreshed for the document: file:///Users/ivan_wong/Documents/adventure-game副本/src/test/java/com/example/adventure_game/AdventureGameApplicationTests.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.857
+!MESSAGE [Info] Document is null for editor: ShopTest.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.857
+!MESSAGE [Info] Completion handler is refreshed for the document: file:///Users/ivan_wong/Documents/adventure-game副本/src/test/java/com/example/adventure_game/ShopTest.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.875
+!MESSAGE [Info] Document is null for editor: Enemy.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.875
+!MESSAGE [Info] Completion handler is refreshed for the document: file:///Users/ivan_wong/Documents/adventure-game副本/src/main/java/com/example/models/Enemy.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.893
+!MESSAGE [Info] Document is null for editor: EventResponse.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.893
+!MESSAGE [Info] Completion handler is refreshed for the document: file:///Users/ivan_wong/Documents/adventure-game副本/src/main/java/com/example/models/EventResponse.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.909
+!MESSAGE [Info] Document is null for editor: AttackResponse.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.910
+!MESSAGE [Info] Completion handler is refreshed for the document: file:///Users/ivan_wong/Documents/adventure-game副本/src/main/java/com/example/models/AttackResponse.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.924
+!MESSAGE [Info] Document is null for editor: BuyResponse.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:40.924
+!MESSAGE [Info] Completion handler is refreshed for the document: file:///Users/ivan_wong/Documents/adventure-game副本/src/main/java/com/example/models/BuyResponse.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:41.002
+!MESSAGE [Info] Document is null for editor: Shop.java
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2025-11-12 00:36:41.002
+!MESSAGE [Info] Completion handler is refreshed for the document: file:///Users/ivan_wong/Documents/adventure-game副本/src/main/java/com/example/models/Shop.java
+
+!ENTRY org.eclipse.ui.ide 4 4 2025-11-12 00:38:24.897
+!MESSAGE Problems saving workspace
+
+!ENTRY org.eclipse.ui.ide 2 1 2025-11-12 00:38:24.899
+!MESSAGE Problems occurred while trying to save the state of the workbench.
+!SUBENTRY 1 org.eclipse.core.resources 2 234 2025-11-12 00:38:24.899
+!MESSAGE The project description file (.project) for 'adventure-game' was missing.  This file contains important information about the project.  A new project description file has been created, but some information about the project may have been lost.

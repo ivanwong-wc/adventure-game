@@ -17,7 +17,7 @@ public class Controller_Enemy_IntegationTest {
     }
 
     @Test
-    public void testCreateEnemy_GeneratesValidStats() {
+    public void testCreateEnemy() {
         Enemy enemy = controller.createEnemy(10);
         assertTrue(enemy.getAttack() > 1);
         assertTrue(enemy.getHp() > 0);

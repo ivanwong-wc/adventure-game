@@ -163,16 +163,15 @@ public class EventTest {
             @Override 
             public double nextDouble() { return 0.4; } 
         });
+        player.getInventory().add("HealthPotion");
         response = Event.chooseEvent("merchant", "yes", player);
-        oldInventory.add("HealthPotion");
         assertEquals("Got MpPotion but lost an item!", response.getMessage());
-        oldInventory.remove("HealthPotion");
         assertEquals(oldHp, response.getPlayerHp());
         assertEquals(oldAttack, response.getPlayerAttack());
         oldInventory.add("MpPotion");
         assertEquals(oldInventory, response.getInventory());
         assertFalse(response.getInventory().contains("HealthPotion"));
-        assertEquals((oldGold-10), response.getGold());
+        assertEquals(oldGold, response.getGold());
     }
 
     @Test

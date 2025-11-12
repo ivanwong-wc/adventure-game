@@ -65,7 +65,7 @@ public class SystemTest {
         ResponseEntity<Map> shopResp = restTemplate.getForEntity( baseUrl() + "/shop", Map.class);
         assertEquals(HttpStatus.OK, shopResp.getStatusCode());
         Map<String, Integer> shop = shopResp.getBody();
-        assertEquals(3, shop.size());
+        assertEquals(2, shop.size());
 
         //Buy in shop
         ResponseEntity<BuyResponse> buyResp = restTemplate.postForEntity(baseUrl() + "/shop/HealthPotion", null, BuyResponse.class);
@@ -100,6 +100,7 @@ public class SystemTest {
             assertNotNull(event);
             assertTrue(Event.eventList.containsKey(event.get("key")));
         }
+        
         //Trigger the event 
         ResponseEntity<EventResponse> choiceResp = restTemplate.postForEntity(
                 baseUrl() + "/event/" + event.get("key") + "/yes", null, EventResponse.class);

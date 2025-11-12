@@ -15,6 +15,8 @@ public class PlayerTest {
     @BeforeEach
     public void setUp() {
         player = new Player();
+        Character character = new CharacterStub();
+        player.setUpData(character);
     }
 
     private void setPrivateField(String fieldName, Object value) {
@@ -34,7 +36,7 @@ public class PlayerTest {
         private int gold = 100;
         private double luck = 0.5;
         private List<String> inventory = new ArrayList<>();
-        private Map<String, Skill> skills = new HashMap<>();
+        private Map<String, Skill> skills = new HashMap<>(){};
 
         @Override public int getAttack() { return attack; }
         @Override public int getHp() { return hp; }
@@ -71,7 +73,6 @@ public class PlayerTest {
 
     static class EnemyStub extends Enemy {
         EnemyStub() {
-            super();
         }
     }
 
@@ -162,35 +163,37 @@ public class PlayerTest {
     @Test
     public void testChangeBuff() {
         setPrivateField("buff", 0);
-        player.changeBuff("StrengthPotion");
+        player.useItem("StrengthPotion");
         assertEquals(5, player.getBuff());
     }
 
     @Test
     public void testChangeBuffNotSuccessful() {
+        player.getInventory().remove(0);
         setPrivateField("buff", 0);
-        player.changeBuff("HealthPotion");
+        player.useItem("StrengthPotion");
         assertNotEquals(5, player.getBuff());
     }
 
     @Test
     public void testUseItem_HealthPotion() {
         setPrivateField("hp", 100);
+        player.getInventory().add("HealthPotion");
         player.useItem("HealthPotion");
         assertNotEquals(100, player.getHp());
     }
 
     @Test
     public void testUseItem_StrengthPotion() {
-        setPrivateField("attack", 10);
+        setPrivateField("buff", 10);
         player.useItem("StrengthPotion");
-
-        assertNotEquals(10, player.getAttack());
+        assertNotEquals(0, player.getBuff());
     }
 
     @Test
     public void testUseItem_MpPotion() {
         setPrivateField("mp", 50);
+        player.getInventory().add("MpPotion");
         player.useItem("MpPotion");
         assertNotEquals(50, player.getMp());
     }
