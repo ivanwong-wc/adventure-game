@@ -38,7 +38,7 @@ public class Controller_Player_IntegationTest {
         @Override
         public void setUpCharacter(String characterType) {
             this.characterType = characterType;
-            if ("Knight".equalsIgnoreCase(characterType)) {
+            if ("knight".equalsIgnoreCase(characterType)) {
                 setPrivateField("hp", 99);
                 setPrivateField("mp", 99);
                 setPrivateField("attack", 9);
@@ -98,9 +98,9 @@ public class Controller_Player_IntegationTest {
 
     @Test
     public void testGetPlayer() {
-        Player result = controller.getPlayer("Knight");
+        Player result = controller.getPlayer("knight");
         assertSame(playerStub, result);
-        assertEquals("Knight", playerStub.getCharacterType());
+        assertEquals("knight", playerStub.getCharacterType());
         assertEquals(99, playerStub.getHp());
         assertEquals(99, playerStub.getMp());
         assertEquals(9, playerStub.getAttack());
@@ -109,7 +109,7 @@ public class Controller_Player_IntegationTest {
 
     @Test
     public void testUseItem_ChangesPlayerHp() {
-        controller.getPlayer("Knight");
+        controller.getPlayer("knight");
         Player result = controller.useItem("HealthPotion");
         assertSame(playerStub, result);
         assertEquals(129, playerStub.getHp());
@@ -117,7 +117,7 @@ public class Controller_Player_IntegationTest {
 
     @Test
     public void testUseItem_ChangesPlayerMp() {
-        controller.getPlayer("Knight");
+        controller.getPlayer("knight");
         Player result = controller.useItem("MpPotion");
         assertSame(playerStub, result);
         assertEquals(129, playerStub.getMp());
@@ -125,7 +125,7 @@ public class Controller_Player_IntegationTest {
 
     @Test
     public void testUseItem_ChangesPlayerStrength() {
-        controller.getPlayer("Knight");
+        controller.getPlayer("knight");
         Player result = controller.useItem("StrengthPotion");
         assertSame(playerStub, result);
         assertEquals(14, playerStub.getAttack());
@@ -133,7 +133,7 @@ public class Controller_Player_IntegationTest {
 
     @Test
     public void testAttackEnemy() {
-        controller.getPlayer("Knight");
+        controller.getPlayer("knight");
         AttackResponse response = controller.attackEnemy("Slash");
         assertNotNull(response);
     }

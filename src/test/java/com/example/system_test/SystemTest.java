@@ -34,8 +34,7 @@ public class SystemTest {
         assertNotNull(player);
         assertEquals(100, player.getHp());
 
-        ResponseEntity<Enemy> enemyResp = restTemplate.postForEntity(
-                baseUrl() + "/enemy/1", null, Enemy.class);
+        ResponseEntity<Enemy> enemyResp = restTemplate.postForEntity( baseUrl() + "/enemy/1", null, Enemy.class);
         assertEquals(HttpStatus.OK, enemyResp.getStatusCode());
         Enemy enemy = enemyResp.getBody();
         assertTrue(enemy.getAttack() > 1);
@@ -73,8 +72,7 @@ public class SystemTest {
         BuyResponse response = buyResp.getBody();
         if(response.getMessage()!=null){
             while (response.getMessage().equals("Item not found!")) {
-             buyResp = restTemplate.postForEntity(
-                    baseUrl() + "/shop/HealthPotion", null, BuyResponse.class);
+             buyResp = restTemplate.postForEntity( baseUrl() + "/shop/HealthPotion", null, BuyResponse.class);
             assertEquals(HttpStatus.OK, buyResp.getStatusCode());
             response = buyResp.getBody();
         }
@@ -90,26 +88,12 @@ public class SystemTest {
         assertNotNull(event);
         assertTrue(Event.eventList.containsKey(event.get("key")));
 
-
-
-        //( for futher action let make it fixed to fairy)
-        while(!"fairy".equals(event.get("key"))){
-            eventResp = restTemplate.getForEntity(baseUrl() + "/event", Map.class);
-            assertEquals(HttpStatus.OK, eventResp.getStatusCode());
-            event = eventResp.getBody();
-            assertNotNull(event);
-            assertTrue(Event.eventList.containsKey(event.get("key")));
-        }
-        
+        // for futher action let make it fixed to fairy
         //Trigger the event 
         ResponseEntity<EventResponse> choiceResp = restTemplate.postForEntity(
-                baseUrl() + "/event/" + event.get("key") + "/yes", null, EventResponse.class);
+                baseUrl() + "/event/fairy/yes", null, EventResponse.class);
         assertEquals(HttpStatus.OK, choiceResp.getStatusCode());
         EventResponse eventResponse = choiceResp.getBody();
-        if(eventResponse.getMessage().equals("Got HealthPotion!")){
-            assertTrue(eventResponse.getInventory().contains("HealthPotion"));
-        }else{
-            assertFalse(eventResponse.getInventory().contains("HealthPotion"));
-        }
+        assertTrue(eventResponse.getInventory().contains("HealthPotion"));
     }
 }

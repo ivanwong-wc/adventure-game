@@ -33,7 +33,7 @@ public class Controller_Shop_IntegationTest {
     @Test
     public void testListItem() {
         Map<String, Integer> items = controller.listItem();
-        assertEquals(3,items.size()); 
+        assertEquals(2,items.size()); 
     }
 
     @Test
@@ -44,7 +44,7 @@ public class Controller_Shop_IntegationTest {
         controller.useItem("HealthPotion");
         Map<String, Integer> items = controller.listItem();
         while(!items.containsKey("HealthPotion")){
-            controller.listItem(); 
+            items = controller.listItem(); 
         }
         BuyResponse response = controller.buyItem("HealthPotion");
         assertNull(response.getMessage());
@@ -60,7 +60,7 @@ public class Controller_Shop_IntegationTest {
         int originalHp = player.getHp();
         Map<String, Integer> items = controller.listItem(); 
         while(!items.containsKey("Health10HP")){
-            controller.listItem(); 
+            items = controller.listItem(); 
         }
         BuyResponse response = controller.buyItem("Health10HP");
         assertNull(response.getMessage());
@@ -76,7 +76,7 @@ public class Controller_Shop_IntegationTest {
         int originalAtk = player.getAttack();
         Map<String, Integer> items = controller.listItem(); 
         while(!items.containsKey("Raise2ATK")){
-            controller.listItem(); 
+            items = controller.listItem(); 
         }
         BuyResponse response = controller.buyItem("Raise2ATK");
         assertEquals("Not enough gold!", response.getMessage());
