@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 import com.example.character.Character;
 import com.example.character.CharacterSetUp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Player{
     private int attack;
@@ -119,4 +120,10 @@ public class Player{
         }
         return this.buff;
     }
+    
+    @JsonIgnore
+    public Player getPlayer() {
+        return this;
+    }
+
 }

@@ -14,7 +14,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ActionTestStub {
+public class ActionTest {
 
     static class PlayerStub extends Player {
         public PlayerStub() {

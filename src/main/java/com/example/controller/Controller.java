@@ -30,7 +30,15 @@ public class Controller {
         System.out.println("Player created: " + character);
         return player;
     }
-    
+
+    @GetMapping("/player/getCharacter")
+    public Player getPlayer() {
+        Player p = player.getPlayer();
+        System.out.println("Player: " + p);
+        return p;
+    }
+
+
     @PostMapping("/enemy/{level}")
     public Enemy createEnemy(@PathVariable int level) {
         Random rand = new Random();

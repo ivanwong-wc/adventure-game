@@ -204,4 +204,12 @@ public class PlayerTest {
         player.useItem("unknown");
         assertEquals(100, player.getHp());
     }
+
+    @Test
+    public void getPlayer() {
+        setPrivateField("hp", 100);
+        Player p = player.getPlayer();
+        assertEquals(p, player.getPlayer());
+    }
+
 }

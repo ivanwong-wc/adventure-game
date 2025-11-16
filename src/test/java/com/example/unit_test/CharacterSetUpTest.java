@@ -12,7 +12,7 @@ import com.example.character.Knight;
 import com.example.character.Wizard;
 import com.example.character.Villager;
 
-public class CharacterSetUpTestStub {
+public class CharacterSetUpTest {
 
     static class PlayerStub extends Player {
         private Character character = null;
