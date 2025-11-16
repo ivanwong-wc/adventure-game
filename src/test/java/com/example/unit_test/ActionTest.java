@@ -160,14 +160,22 @@ public class ActionTest {
 
     @Test
     public void testAttackEnemySuccessfulButNotKill() {
-        playerStub.changeMp(100);
-        int original_Player_Hp = playerStub.getHp();
-        int original_gold = playerStub.getGold();
-        AttackResponse ar =  Action.attackEnemy("Punch", enemyStub, playerStub, playerStub.getSkills());
-        assertTrue( "success Evades".equals(ar.getMessage()) || "hurt".equals(ar.getMessage()));
-        assertTrue(((original_Player_Hp - enemyStub.getAttack()) == ar.getPlayerHp()) || (original_Player_Hp == ar.getPlayerHp()));
-        assertTrue( ar.getEnemyHp()>0); 
-        assertFalse(ar.isVictory());
-        assertTrue(ar.getGold()==original_gold);
+        playerStub.changeMp(1000);
+        Set<String> messages = new HashSet<>();
+        while (messages.size() < 2 ){
+            int original_Player_Hp = playerStub.getHp();
+            int original_gold = playerStub.getGold();
+            AttackResponse ar = Action.attackEnemy("Punch", enemyStub, playerStub, playerStub.getSkills());
+
+            assertTrue("success Evades".equals(ar.getMessage()) || "hurt".equals(ar.getMessage()));
+            assertTrue((original_Player_Hp - enemyStub.getAttack()) == ar.getPlayerHp() || original_Player_Hp == ar.getPlayerHp());
+            assertTrue(ar.getEnemyHp() > 0);
+            assertFalse(ar.isVictory());
+            assertEquals(original_gold, ar.getGold());
+
+            messages.add(ar.getMessage());
+        }
+        assertTrue(messages.contains("success Evades"));
+        assertTrue(messages.contains("hurt"));
     }
 }

@@ -13,7 +13,7 @@ public class Shop {
         item.clear();
         while (item.size()<2){
             Random rand = new Random();
-            switch (rand.nextInt(10)) {
+            switch (rand.nextInt(11)) {
                 case 1,9 -> this.item.put("Raise2ATK", 20);
                 case 0,8 -> this.item.put("Recover10MP", 15);
                 case 3,7 -> this.item.put("HealthPotion", 10);

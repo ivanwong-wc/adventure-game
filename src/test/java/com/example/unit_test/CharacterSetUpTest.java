@@ -40,4 +40,14 @@ public class CharacterSetUpTest {
         CharacterSetUp.setupPlayer(player, "villager");
         assertTrue(player.character instanceof Villager);
     }
+    @Test
+public void testCharacterSetUpUnknown() {
+    PlayerStub player = new PlayerStub();
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> CharacterSetUp.setupPlayer(player, "unknown"),
+        "Expected setupPlayer to throw IllegalArgumentException for unknown type"
+    );
+    assertEquals("Unknown character: unknown", exception.getMessage());
+}
 }

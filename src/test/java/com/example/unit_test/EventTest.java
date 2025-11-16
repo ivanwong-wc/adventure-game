@@ -301,6 +301,21 @@ public class EventTest {
         assertEquals(oldGold, response.getGold());
     }
 
+    @Test
+    public void testChooseEventUnknown() {
+        PlayerEventStub player = new PlayerEventStub();
+        int oldHp = player.getHp();
+        int oldAttack = player.getAttack();
+        List<String> oldInventory = new ArrayList<>(player.inventory);
+        int oldGold = player.getGold();
+        EventResponse response = Event.chooseEvent("unknown", "yes", player);
+
+        assertNull(response.getMessage());
+        assertEquals(oldHp, response.getPlayerHp());
+        assertEquals(oldAttack, response.getPlayerAttack());
+        assertEquals(oldInventory, response.getInventory());
+        assertEquals(oldGold, response.getGold());
+    }
 
 
 }
