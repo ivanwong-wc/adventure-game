@@ -127,6 +127,8 @@ export default {
         border: 5px solid white;
         height: 270px;
         margin: auto;
+        width:80%;
+        display: flex;
     }
     .Shop-page {
         display: flex;
@@ -170,7 +172,7 @@ export default {
     }
     .Shoplist{
         float: right;
-        width: 40%;
+        width: 50%;
         height: 100%;
         gap: 20px;
         text-align: left;
@@ -184,7 +186,7 @@ export default {
     }
     .item-scroll-container {
         max-height: 200px;
-        width: 400px;
+        width: 100%;
         overflow-y: auto;
         padding-right: 8px;
         margin-bottom: 10px;

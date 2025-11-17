@@ -4,13 +4,11 @@
         <!--<div class="topright" @click="gotosetting()"><h2>Setting</h2></div>-->
     </div>
     <div class="Battle-page">
-        <div class="EnemyLook">
-            <img role="text" :aria-label="$t('info')" src="@/main/Image/ememy.jpeg"></img>
+        <div class="image-wrapper">
+            <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/ememy.jpeg"></img>
+            <div class="smallbox">{{ message }}</div>
             <p>Enemy</p>
             <p>HP: {{ enemyHP }}</p>
-        </div>
-        <div class="smallbox">
-            {{  }}
         </div>
         <div class="Playeractionbox">
             <div class="Playerstatus">
@@ -20,25 +18,26 @@
                 <p>Buff: {{ playerBuff }}</p>
                 <p>Luck: {{ playerLuck }}</p>
             </div>
-            <div class="Playeraction actionbuttons" v-if="!ListOpen1 && !ListOpen2">
-                <div class="buttonset" @click="attack(punch)">Attack</div>
-                <div class="buttonset" @click="showskill()">Skills</div>
-                <div class="buttonset" @click="showitem()">Items</div>
+            <div class="Playeraction actionbuttons" v-if="!ListOpen1 && !ListOpen2 && ListOpen3">
+                <div class="item-scroll-container">
+                    <div @click="attack(mainweaponattack)">Attack ({{ mainweaponattack }})</div>
+                    <div @click="showskill()">Skill</div>
+                    <div @click="showitem()">Item</div>
+                </div>
             </div>
             <div class="Playeraction Listshow1" v-if="ListOpen1">
                 <div class="item-scroll-container">
-                    <div class="button2set" v-for="item in list" :key="item">
+                    <div v-for="item in list" :key="item">
                         <div @click="attack(item)">{{ item }}</div>
-                    </div>
-                    <div class="button2set" @click="GoBack()">Go Back</div>
+                    <div @click="GoBack()">Go Back</div>
                 </div>
             </div>
             <div class="Playeraction Listshow2" v-if="ListOpen2">
                 <div class="item-scroll-container">
-                    <div class="button2set" v-for="item in list" :key="item">
+                    <div v-for="item in list" :key="item">
                         <div @click="choose(item)">{{ item }}</div>
                     </div>
-                    <div class="button2set" @click="GoBack()">Go Back</div>
+                    <div @click="GoBack()">Go Back</div>
                 </div>
             </div>
         </div>
@@ -56,27 +55,24 @@ export default {
     data() {
         return {
             // enemy
-            enemyName: '',
             enemyHP: 0,
-            enemyTotalHP: 0,
             // player
             playerHP: 0,
-            playerTotalHP: 0,
             playerMP: 0,
-            playerTotalMP: 0,
             playerBuff: '',
             playerLuck: 0,
+            getGold: 0,
             mainweaponattack: '',
-            newPlayerHP: 0,
-            newPlayerMP: 0,
             // list
             list: [],
             Itemlist: [],
             skilllist: [],
             ListOpen1: false,
             ListOpen2: false,
-            // round
-            playerround: true,
+            ListOpen3: true,
+            // message
+            message: 'I am your enemy, come and fight me!',
+            getmessage: '',
         };
     },
     methods: {
@@ -116,23 +112,34 @@ export default {
                 this.playerHP = response.data.playerHp;
                 this.playerMP = response.data.playerMp;
                 this.enemyHP = response.data.enemyHp;
-                this.message = response.data.error;
+                this.getmessage = response.data.message;
                 this.getGold = response.data.gold;
                 this.ListOpen1 = false;
                 this.ListOpen2 = false;
                 this.playerround = false;
                 if(this.enemyHP < 1){
                     console.log("User Win!!!");
+                    message = "Player kill the enemy. What a perfect victory! You Win! You get: ",getGold," Going to Shop to buy items.";
+                    ListOpen3 = false;
+                    setTimeout(3000);
                     this.$router.push("/Shoppage");
                     return;
-                }else if(this.newPlayerHP < 1){
+                }else if(this.playerHP < 1){
                     console.log("User lose!!!");
+                    message = "The enemy killed Player. What a heroic sacrifice. You Lose! Going to End Page.";
+                    ListOpen3 = false;
+                    setTimeout(3000);
                     this.$router.push("/EndPage");
                     return;
                 }
-                if(this.newPlayerHP != this.playerMP){
-                    
+                if(this.getmessage == "hurt"){
+                    this.message = "Player rushed to attack enemy and did some damage but got hurt when facing enemy's counterattack.";
+                }else if(this.getmessage == "success Evades"){
+                    this.message = "Player rushed to attack enemy and did some damage and now facing enemy's counterattack. Watch out! Missed!!!! Enemy missed the counterattack!";
+                }else{
+                    this.message = this.getmessage;
                 }
+
             } catch (error) {
                 console.error('Error fetching attack data:', error);
             }
@@ -147,6 +154,7 @@ export default {
                 this.Itemlist = response.data.inventory || [];
                 this.ListOpen1 = true;
                 this.ListOpen2 = false;
+                this.message = response.data.message;
             } catch (error) {
                 console.error('Error fetching item data:', error);
             }
@@ -183,19 +191,6 @@ export default {
         padding: 0;
         height: 100%;
     }
-    .buttonset {
-        padding: 12px 20px;
-        width: 400px;
-        background-color: darkgray;
-        border-radius: 25px;
-        color: #FF0000;
-        margin: 8px 0;
-        cursor: pointer;
-        user-select: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
     .top{
         margin-top: -10px;
         display: flex;
@@ -212,9 +207,45 @@ export default {
         gap: 10px;
         height: 30px;
     }
+
+    .Battle-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .image-wrapper {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .smallbox{
+        position: absolute;
+        top: 10px;
+        right: -180px;
+        width: 160px;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 3px solid white;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        color: #333;
+        font-size: 14px;
+        text-align: center;
+        z-index: 10;
+    }
+
+    .image{
+        width: 200px;
+        height: 200px;
+    }
     .Playeractionbox{
         border: 5px solid white;
         height: 270px;
+        width: 80%;
+        display: flex;
         margin: auto;
     }
     .Playerstatus{
@@ -226,7 +257,7 @@ export default {
     }
     .Playeraction{
         float: right;
-        width: 40%;
+        width: 50%;
         height: 100%;
         gap: 20px;
         text-align: left;
@@ -240,7 +271,7 @@ export default {
     }
     .item-scroll-container {
         max-height: 200px;
-        width: 400px;
+        width: 100%;
         overflow-y: auto;
         padding-right: 8px;
         margin-bottom: 10px;
