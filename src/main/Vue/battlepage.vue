@@ -22,13 +22,21 @@
                 <div class="buttonset" @click="showskill()">Skills</div>
                 <div class="buttonset" @click="showitem()">Items</div>
             </div>
-            <div class="Playeraction Listshow1" v-if="ListOpen1" v-for="item in list">
-                <div class="buttonset" @click="attack(item)">{{ item }}</div>
-                <div class="buttonset" @click="GoBack()">Go Back</div>
+            <div class="Playeraction Listshow1" v-if="ListOpen1">
+                <div class="item-scroll-container">
+                    <div class="button2set" v-for="item in list" :key="item">
+                        <div @click="attack(item)">{{ item }}</div>
+                    </div>
+                    <div class="button2set" @click="GoBack()">Go Back</div>
+                </div>
             </div>
-            <div class="Playeraction Listshow2" v-if="ListOpen2" v-for="item in list">
-                <div class="buttonset" @click="choose(item)">{{ item }}</div>
-                <div class="buttonset" @click="GoBack()">Go Back</div>
+            <div class="Playeraction Listshow2" v-if="ListOpen2">
+                <div class="item-scroll-container">
+                    <div class="button2set" v-for="item in list" :key="item">
+                        <div @click="choose(item)">{{ item }}</div>
+                    </div>
+                    <div class="button2set" @click="GoBack()">Go Back</div>
+                </div>
             </div>
         </div>
     </div>
@@ -55,7 +63,7 @@ export default {
             playerTotalMP: 0,
             playerBuff: '',
             playerLuck: 0,
-            mainweaponattack: 0,
+            mainweaponattack: '',
             // list
             list: [],
             Itemlist: [],
@@ -71,7 +79,7 @@ export default {
             try {
                 const response = await api.post(`/enemy/${level}`);
                 //this.enemyName = response.data.name;
-                this.enemyHP = response.data.currentHP;
+                this.enemyHP = response.data.hp;
                 //this.enemyTotalHP = response.data.totalHP;
             } catch (error) {
                 console.error('Error fetching enemy data:', error);
@@ -79,7 +87,7 @@ export default {
         },
         async GetPlayerdata() {
             try {
-                const response = await api.post(`/player/getCharacter`);
+                const response = await api.get(`/player/getCharacter`);
                 this.playerHP = response.data.hp ?? 0;
                 //this.playerTotalHP = response.data.hp ?? this.playerTotalHP;
                 this.playerMP = response.data.mp ?? 0;
@@ -88,7 +96,7 @@ export default {
                 this.playerBuff = response.data.buff ?? 0;
                 this.mainweaponattack = response.data.attack ?? 0;
                 this.Itemlist = response.data.inventory || [];
-                this.skilllist = response.data.skills || [];
+                this.skilllist = Object.keys(response.data.skills || {});
             } catch (error) {
                 console.error('Error fetching player data:', error);
             }
@@ -100,16 +108,20 @@ export default {
             console.log("Attack button clicked, damage:", damage);
             try {
                 const response = await api.post(`/attack/${damage}`);
-                this.enemyHP = response.data.currentHP;
-                this.playerMP = response.data.playerMP;
+                this.enemyHP = response.data.enemyHp;
+                this.playerMP = response.data.playerMp;
+                this.enemyHP = response.data.enemyHp;
                 this.ListOpen1 = false;
                 this.ListOpen2 = false;
                 this.playerround = false;
                 if(this.enemyHP < 1){
                     console.log("User Win!!!");
                     this.$router.push("/Shoppage");
-                }else{
-                    this.userunderattack();
+                    return;
+                }else if(this.enemyHP < 0){
+                    console.log("User lose!!!");
+                    this.$router.push("/EndPage");
+                    return;
                 }
             } catch (error) {
                 console.error('Error fetching attack data:', error);
@@ -119,24 +131,19 @@ export default {
             console.log("Chosen item/skill:", item);
             try {
                 const response = await api.post(`/items/${item}`);
-                this.playerHP = response.data.playerHP;
-                this.enemyHP = response.data.enemyHP;
+                this.playerHP = response.data.hp;
+                this.playerMP = response.data.mp;
+                this.playerBuff = response.data.buff;
                 this.Itemlist = response.data.inventory || [];
-                this.playerround = false;
-                this.userunderattack();
+                this.ListOpen1 = true;
+                this.ListOpen2 = false;
             } catch (error) {
                 console.error('Error fetching item data:', error);
             }
         },
         showskill() {
             console.log("Skill button clicked");
-            let skilllistTest = [
-                "Fireball",
-                "Ice Spike",
-                "Heal",
-                "Lightning Strike"
-            ]
-            this.list = skilllist;
+            this.list = this.skilllist;
             this.ListOpen1 = true;
             this.ListOpen2 = false;
         },
@@ -147,30 +154,9 @@ export default {
         },
         showitem() {
             console.log("Item button clicked");
-            let ItemlistTest = [
-                "cold",
-                "C4",
-                "apple",
-                "Java book"
-            ]
-            this.list = Itemlist;
+            this.list = this.Itemlist;
             this.ListOpen1 = false;
             this.ListOpen2 = true;
-        },
-        async userunderattack() {
-            console.log("Enemy is attacking");
-            try{
-                const response = await api.post(`/enemyAttack/`);
-                this.playerHP = response.data.playerHP;
-                this.enemyHP = response.data.enemyHP;
-                if(this.playerHP > 1){
-                    this.playerround = true;
-                }else{
-                    this.$router.push("/EndPage");
-                }
-            } catch (error) {
-                console.error('Error fetching enemy attack data:', error);
-            }
         }
     },
     mounted() {
@@ -188,12 +174,17 @@ export default {
         height: 100%;
     }
     .buttonset {
-        padding: 5px 20px;
-        white-space: nowrap;
-        display: inline-block;
+        padding: 12px 20px;
+        width: 400px;
         background-color: darkgray;
         border-radius: 25px;
         color: #FF0000;
+        margin: 8px 0;
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .top{
         margin-top: -10px;
@@ -237,4 +228,38 @@ export default {
     .disappear{
         display:none;
     }
+    .item-scroll-container {
+        max-height: 200px;
+        width: 400px;
+        overflow-y: auto;
+        padding-right: 8px;
+        margin-bottom: 10px;
+    }
+    .loop {
+        margin: 8px 0;
+    }
+    .back-btn {
+        margin-top: 10px;
+        background-color: #555;
+        color: white;
+    }
+
+    .item-scroll-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .item-scroll-container::-webkit-scrollbar-track {
+        background: #333;
+        border-radius: 4px;
+    }
+
+    .item-scroll-container::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .item-scroll-container::-webkit-scrollbar-thumb:hover {
+        background: #aaa;
+    }
+
 </style>
