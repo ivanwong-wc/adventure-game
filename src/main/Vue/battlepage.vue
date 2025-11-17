@@ -9,6 +9,9 @@
             <p>Enemy</p>
             <p>HP: {{ enemyHP }}</p>
         </div>
+        <div class="smallbox">
+            {{  }}
+        </div>
         <div class="Playeractionbox">
             <div class="Playerstatus">
                 <p>You</p>
@@ -18,7 +21,7 @@
                 <p>Luck: {{ playerLuck }}</p>
             </div>
             <div class="Playeraction actionbuttons" v-if="!ListOpen1 && !ListOpen2">
-                <div class="buttonset" @click="attack(mainweaponattack)">Attack</div>
+                <div class="buttonset" @click="attack(punch)">Attack</div>
                 <div class="buttonset" @click="showskill()">Skills</div>
                 <div class="buttonset" @click="showitem()">Items</div>
             </div>
@@ -64,6 +67,8 @@ export default {
             playerBuff: '',
             playerLuck: 0,
             mainweaponattack: '',
+            newPlayerHP: 0,
+            newPlayerMP: 0,
             // list
             list: [],
             Itemlist: [],
@@ -108,9 +113,11 @@ export default {
             console.log("Attack button clicked, damage:", damage);
             try {
                 const response = await api.post(`/attack/${damage}`);
-                this.enemyHP = response.data.enemyHp;
+                this.playerHP = response.data.playerHp;
                 this.playerMP = response.data.playerMp;
                 this.enemyHP = response.data.enemyHp;
+                this.message = response.data.error;
+                this.getGold = response.data.gold;
                 this.ListOpen1 = false;
                 this.ListOpen2 = false;
                 this.playerround = false;
@@ -118,10 +125,13 @@ export default {
                     console.log("User Win!!!");
                     this.$router.push("/Shoppage");
                     return;
-                }else if(this.enemyHP < 0){
+                }else if(this.newPlayerHP < 1){
                     console.log("User lose!!!");
                     this.$router.push("/EndPage");
                     return;
+                }
+                if(this.newPlayerHP != this.playerMP){
+                    
                 }
             } catch (error) {
                 console.error('Error fetching attack data:', error);
