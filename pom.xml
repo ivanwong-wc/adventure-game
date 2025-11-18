@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
+        <version>3.3.6</version> <!-- 2025 年最新穩定版 -->
         <relativePath/>
     </parent>
+
     <groupId>com.example</groupId>
     <artifactId>adventure-game</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>adventure-game</name>
-    <description>Demo project for Spring Boot</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>瘋狂Jamesの致富之路</name>
+    <description>瘋狂James暴富遊戲 - 打包成exe版</description>
+
     <properties>
         <java.version>17</java.version>
+        <node.version>18.20.4</node.version>
+        <npm.version>10.8.3</npm.version>
+        <frontend.src.dir>src/main/Vue</frontend.src.dir>
+        <project.build.finalName>瘋狂Jamesの致富之路</project.build.finalName>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,31 +45,117 @@
     </dependencies>
 
     <build>
+        <finalName>${project.build.finalName}</finalName>
         <plugins>
+
+            <!-- 1. Spring Boot 打包 -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.example.AdventureGameApplication</mainClass>
+                </configuration>
             </plugin>
+
+            <!-- 2. 前端：自動安裝 node + npm install + npm run build -->
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.15.0</version>
+                <configuration>
+                    <workingDirectory>${frontend.src.dir}</workingDirectory>
+                    <nodeVersion>${node.version}</nodeVersion>
+                    <npmVersion>${npm.version}</npmVersion>
+                </configuration>
                 <executions>
+                    <execution><id>install node</id><goals><goal>install-node-and-npm</goal></goals></execution>
+                    <execution><id>npm install</id><goals><goal>npm</goal></goals><configuration><arguments>install</arguments></configuration></execution>
                     <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
+                        <id>npm build</id>
+                        <goals><goal>npm</goal></goals>
+                        <phase>generate-resources</phase>
+                        <configuration><arguments>run build</arguments></configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- 3. 把 Vue 打包好的 dist 複製到 target/vue-dist（就是你問的那個） -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-vue-dist</id>
+                        <phase>generate-resources</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/vue-dist</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend.src.dir}/dist</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 4. 把靜態資源（vue-dist）打進 jar 裡，讓 Spring Boot 能讀到 -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources-to-jar</id>
+                        <phase>package</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/vue-dist</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 5. 真正生成 Windows exe（雙擊即玩） -->
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.7.0</version>
+                <configuration>
+                    <name>瘋狂Jamesの致富之路</name>
+                    <appVersion>1.0.0</appVersion>
+                    <vendor>瘋狂James工作室</vendor>
+                    <mainClass>com.example.AdventureGameApplication</mainClass>
+
+                    <!-- 圖標（512x512 .ico）放在 src/main/resources/icon.ico -->
+                    <icon>src/main/resources/icon.ico</icon>
+
+                    <!-- Windows 專屬設定 -->
+                    <winMenu>true</winMenu>
+                    <winMenuGroup>瘋狂James遊戲</winMenuGroup>
+                    <winShortcut>true</winShortcut>
+                    <winPerUserInstall>true</winPerUserInstall>
+
+                    <!-- 把前面複製好的靜態資源帶進去 -->
+                    <resourceDir>${project.build.directory}/${project.build.finalName}</resourceDir>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jpackage-exe</id>
+                        <goals><goal>jpackage</goal></goals>
+                        <configuration>
+                            <type>EXE</type>
+                            <destination>${project.build.directory}/exe-dist</destination>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
-
 </project>
