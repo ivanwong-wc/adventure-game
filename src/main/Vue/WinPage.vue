@@ -1,7 +1,7 @@
 <template>
     <div class="EndPage">
         <h1>瘋狂Jamesの致富之路</h1>
-        <p>You lost</p>
+        <p>You win</p>
         <p>Thank you for playing</p>
         <router-link to="/choose-characterpage">
             <button>Restart Game</button>

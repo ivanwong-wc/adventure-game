@@ -15,12 +15,13 @@
                 <p>You</p>
                 <p>HP: {{ playerHP }}</p>
                 <p>Mp: {{ playerMP }}</p>
+                <p>Attack: {{ playerAttack }}</p>
                 <p>Buff: {{ playerBuff }}</p>
                 <p>Luck: {{ playerLuck }}</p>
             </div>
             <div class="Playeraction actionbuttons" v-if="!ListOpen1 && !ListOpen2 && ListOpen3">
                 <div class="item-scroll-container">
-                    <div @click="attack(mainweaponattack)">Attack ({{ mainweaponattack }})</div>
+                    <div @click="attack('Punch')">Attack</div>
                     <div @click="showskill()">Skill</div>
                     <div @click="showitem()">Item</div>
                 </div>
@@ -60,9 +61,9 @@ export default {
             playerHP: 0,
             playerMP: 0,
             playerBuff: '',
+            playerAttack: 0,
             playerLuck: 0,
             getGold: 0,
-            mainweaponattack: '',
             // list
             list: [],
             Itemlist: [],
@@ -92,10 +93,10 @@ export default {
                 this.playerHP = response.data.hp ?? 0;
                 //this.playerTotalHP = response.data.hp ?? this.playerTotalHP;
                 this.playerMP = response.data.mp ?? 0;
+                this.playerAttack = response.data.attack ?? 0;
                 //this.playerTotalMP = response.data.mp ?? this.playerTotalMP;
                 this.playerLuck = response.data.luck ?? 0;
                 this.playerBuff = response.data.buff ?? 0;
-                this.mainweaponattack = response.data.attack ?? 0;
                 this.Itemlist = response.data.inventory || [];
                 this.skilllist = Object.keys(response.data.skills || {});
             } catch (error) {
@@ -119,10 +120,10 @@ export default {
                 this.playerround = false;
                 if(this.enemyHP < 1){
                     console.log("User Win!!!");
-                    message = "Player kill the enemy. What a perfect victory! You Win! You get: ",getGold," Going to Shop to buy items.";
+                    message = "Player kill the enemy. What a perfect victory! You Win! You get: ",getGold;
                     ListOpen3 = false;
                     setTimeout(3000);
-                    this.$router.push("/Shoppage");
+                    this.$router.push("/WinPage");
                     return;
                 }else if(this.playerHP < 1){
                     console.log("User lose!!!");

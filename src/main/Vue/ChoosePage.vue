@@ -18,16 +18,16 @@
       </div>
       <div class="Character2">
         <!--<img role="text" :aria-label="$t('info')" src="@/assets/images/home-page/info.svg"></img>-->
-        <h3>knight{useless}</h3>
-        <div class="buttonset" @click.stop="selectCharacter('knight')" 
+        <h3>Villager</h3>
+        <div class="buttonset" @click.stop="selectCharacter('villager')" 
              :disabled="loading">
           {{ loading ? 'loading' : 'Select' }}
         </div>
       </div>
       <div class="Character3">
         <!--<img role="text" :aria-label="$t('info')" src="@/assets/images/home-page/info.svg"></img>-->
-        <h3>knight{useless}</h3>
-        <div class="buttonset" @click.stop="selectCharacter('knight')" 
+        <h3>Wizard</h3>
+        <div class="buttonset" @click.stop="selectCharacter('wizard')" 
              :disabled="loading">
           {{ loading ? 'loading' : 'Select' }}
         </div>
@@ -62,7 +62,7 @@ export default {
       try {
         const response = await api.post(`/player/${character}`);
         console.log('Character selection response:', response.data);
-        this.$router.push('/battlepage');
+        this.$router.push('/Shoppage');
         
       } catch (error) {
         console.error('Error selecting character:', error);

@@ -3,13 +3,10 @@
         <h2>瘋狂Jamesの致富之路</h2>
         <!--<div class="topright" @click="gotosetting()"><h2>Setting</h2></div>-->
     </div>
-    <div class="Shop-page">
+    <div class="Battle-page">
         <div class="image-wrapper">
             <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/ememy.jpeg"></img>
-            <div class="smallbox">
-                {{ message }}
-            </div>
-            <p>ShopOwner</p>
+            <div class="smallbox">{{ message.event }}</div>
         </div>
         <div class="Playeractionbox">
             <div class="Playerstatus">
@@ -17,17 +14,27 @@
                 <p>HP: {{ playerHP }}</p>
                 <p>Mp: {{ playerMP }}</p>
                 <p>Gold: {{ playerGold }}</p>
+                <p>Gold: {{ playerGold }}</p>
+                <p>Luck: {{ playerLuck }}</p>
             </div>
-            <div class="Shoplist Listshow2">
+            <div class="Playeraction actionbuttons" v-if="!ListOpen2 && ListOpen3">
                 <div class="item-scroll-container">
-                    <div v-for="(item,price) in Itemlist" :key="item">
-                        <div @click="Buyitem(item)">{{ item }} ({{ price }})</div>
+                    <div @click="Give()">Do it</div>
+                    <div @click="showitem()">Item</div>
+                    <div @click="goaway()">Go away</div>
+                </div>
+            </div>
+            <div class="Playeraction Listshow2" v-if="ListOpen2">
+                <div class="item-scroll-container">
+                    <div v-for="item in list" :key="item">
+                        <div>{{ item }}</div>
                     </div>
-                    <div @click="leaveshop">Leave the shop</div>
+                    <div @click="GoBack()">Go Back</div>
                 </div>
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -36,17 +43,26 @@ const api = axios.create({
     baseURL: 'http://localhost:8081/api',
 });
 export default {
-    name: "Shoppage",
+    name: "battlepage",
     data() {
         return {
+            // enemy
+            enemyHP: 0,
             // player
             playerHP: 0,
             playerMP: 0,
+            playerAttack: 0,
+            playerLuck: 0,
+            getGold: 0,
             playerGold: 0,
             // list
-            Itemlist: {},
-            message: 'Welcome to the shop! What do you want to buy?',
-            getmessage: '',
+            list: [],
+            Itemlist: [],
+            ListOpen2: false,
+            ListOpen3: true,
+            // message
+            message: '',
+            messagetype: '',
         };
     },
     methods: {
@@ -55,48 +71,48 @@ export default {
                 const response = await api.get(`/player/getCharacter`);
                 this.playerHP = response.data.hp ?? 0;
                 this.playerMP = response.data.mp ?? 0;
+                this.playerAttack = response.data.attack ?? 0;
+                this.playerLuck = response.data.luck ?? 0;
                 this.playerGold = response.data.gold ?? 0;
+                this.Itemlist = response.data.inventory || [];
+                this.skilllist = Object.keys(response.data.skills || {});
             } catch (error) {
                 console.error('Error fetching player data:', error);
             }
         },
-        gotosetting() {
-            this.$router.push("/setting-page");
-        },
-        async ShopShow() {
+        async showevent() {
             try {
-                const response = await api.get(`/shop`);
-                this.Itemlist = response.data || {}; 
+                const response = await api.get(`/event`);
+                this.message = response.data.event ?? '';
+                this.messagetype = response.data.key ?? ''; 
             } catch (error) {
-                console.error('Error fetching shop data:', error);
+                console.error('Error fetching event data:', error);
             }
         },
-        async Buyitem(item) {
-            console.log("Chosen item/skill:", item);
-            try {
-                const response = await api.post(`/shop/${item}`);
-                this.playerHP = response.data.hp;
-                this.playerMP = response.data.mp;
-                this.playerGold = response.data.gold;
-                this.Itemlist = response.data || {}; 
-                this.getmessage = response.data.message;
-                if(this.getmessage){
-                    this.message = this.getmessage;
-                } else {
-                    this.message = 'Buy ',item,' successfully!';
-                }
+        async Give() {
+            console.log("Give button clicked");
+            try{
+                const response = await api.get(`/event/${messagetype}/${'true'}`);
+                this.message = response.data.message ?? '';
+                this.playerHP = response.data.playerHp ?? 0;
+                this.playerAttack = response.data.playerAttack ?? 0;
+                this.playerGold = response.data.gold ?? 0;
+                this.ListOpen3 = false;
+                setTimeout(3000);
+                this.$router.push("/battlepage");
             } catch (error) {
-                console.error('Error fetching item data:', error);
-                this.message = 'Buy failed. Please buy again.';
+                console.error('Error giving item:', error);
             }
         },
-        leaveshop(){
-            this.$router.push("/Eventpage");
+        showitem() {
+            console.log("Item button clicked");
+            this.list = this.Itemlist;
+            this.ListOpen2 = true;
         }
     },
     mounted() {
         this.GetPlayerdata();
-        this.ShopShow();
+        this.showevent();
     },
 };
 </script>
@@ -124,14 +140,8 @@ export default {
         gap: 10px;
         height: 30px;
     }
-    .Playeractionbox{
-        border: 5px solid white;
-        height: 270px;
-        margin: auto;
-        width:80%;
-        display: flex;
-    }
-    .Shop-page {
+
+    .Battle-page {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -164,6 +174,13 @@ export default {
         width: 200px;
         height: 200px;
     }
+    .Playeractionbox{
+        border: 5px solid white;
+        height: 270px;
+        width: 80%;
+        display: flex;
+        margin: auto;
+    }
     .Playerstatus{
         float: left;
         width: 40%;
@@ -171,7 +188,7 @@ export default {
         text-align: left;
         padding-left: 20px;
     }
-    .Shoplist{
+    .Playeraction{
         float: right;
         width: 50%;
         height: 100%;
