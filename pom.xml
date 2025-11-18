@@ -51,7 +51,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.example.adventure_game</mainClass>
+                    <mainClass>com.example.adventure_game.AdventureGameApplication</mainClass>
                 </configuration>
             </plugin>
 
@@ -135,7 +135,7 @@
                     <name>瘋狂Jamesの致富之路</name>
                     <appVersion>1.0.0</appVersion>
                     <vendor>瘋狂James工作室</vendor>
-                    <mainClass>com.example.adventure_game</mainClass>
+                    <mainClass>com.example.adventure_game.AdventureGameApplication</mainClass>
 
                     <!-- 圖標（512x512 .ico）放在 src/main/resources/icon.ico -->
                     <icon>src/main/resources/icon.ico</icon>
