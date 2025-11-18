@@ -5,7 +5,7 @@
     </div>
     <div class="Battle-page">
         <div class="image-wrapper">
-            <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/ememy.jpeg"></img>
+            <img class="image" role="text" :aria-label="$t('info')" src="getImageSrc()"></img>
             <div class="smallbox">{{ message.event }}</div>
         </div>
         <div class="Playeractionbox">
@@ -108,6 +108,17 @@ export default {
             console.log("Item button clicked");
             this.list = this.Itemlist;
             this.ListOpen2 = true;
+        }
+        getImageSrc() {
+            if (this.messagetype === 'charity') {
+                return require('@/main/Image/charity.png');
+            } else if (this.messagetype === 'merchant') {
+                return require('@/main/Image/merchant.png');
+            } else if (this.messagetype === 'treasure') {
+                return require('@/main/Image/treasure.png');
+            } else {
+                return require('@/main/Image/fairy.png');
+            }
         }
     },
     mounted() {

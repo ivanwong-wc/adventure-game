@@ -5,11 +5,11 @@
     </div>
     <div class="Shop-page">
         <div class="image-wrapper">
-            <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/ememy.jpeg"></img>
+            <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/merchant.png"></img>
             <div class="smallbox">
                 {{ message }}
             </div>
-            <p>ShopOwner</p>
+            <p>Merchant</p>
         </div>
         <div class="Playeractionbox">
             <div class="Playerstatus">

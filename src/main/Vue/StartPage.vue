@@ -1,7 +1,7 @@
 <template>
     <div class="starting-page">
         <h1>瘋狂Jamesの致富之路</h1>
-        <p>Thank you for playing</p>
+        <p>Lets go and be rich</p>
         <router-link to="/choose-characterpage">
             <button>Start Game</button>
         </router-link>
