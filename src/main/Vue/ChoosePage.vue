@@ -1,7 +1,6 @@
 <template>
   <div class="top">
     <h2>瘋狂Jamesの致富之路</h2>
-    <div class="topright" @click="gotosetting()"><h2>Setting</h2></div>
   </div>
   <div class="choose-character-page">
     <h1>Choose Your Character</h1>
@@ -9,7 +8,7 @@
     <div v-if="error" class="error">Error loading characters. Please try again.</div>
     <div class="character-options">
       <div class="Character1">
-        <!--<img role="text" :aria-label="$t('info')" src="@/assets/images/home-page/info.svg"></img>-->
+        <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/knight.png"></img>
         <h3>knight</h3>
         <div class="buttonset" @click.stop="selectCharacter('knight')" 
              :disabled="loading">
@@ -17,7 +16,7 @@
         </div>
       </div>
       <div class="Character2">
-        <!--<img role="text" :aria-label="$t('info')" src="@/assets/images/home-page/info.svg"></img>-->
+        <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/Villager.png"></img>
         <h3>Villager</h3>
         <div class="buttonset" @click.stop="selectCharacter('villager')" 
              :disabled="loading">
@@ -25,7 +24,7 @@
         </div>
       </div>
       <div class="Character3">
-        <!--<img role="text" :aria-label="$t('info')" src="@/assets/images/home-page/info.svg"></img>-->
+        <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/wizard.png"></img>
         <h3>Wizard</h3>
         <div class="buttonset" @click.stop="selectCharacter('wizard')" 
              :disabled="loading">
@@ -84,6 +83,10 @@ export default {
     margin: 0;
     padding: 0;
     height: 100%;
+  }
+  .image{
+    width: 200px;
+    height: 200px;
   }
   .choose-character-page{
     position: fixed;
