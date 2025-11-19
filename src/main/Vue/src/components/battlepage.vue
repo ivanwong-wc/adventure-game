@@ -24,20 +24,20 @@
                 </div>
             </div>
             <div class="Playeraction Listshow1" v-if="ListOpen1">
-                <div class="item-scroll-container">
-                    <div v-for="item in list" :key="item">
-                        <div @click="attack(item)">{{ item }}</div>
+                <!--<div class="item-scroll-container">-->
+                    <div v-for="item in list" :key="item" @click="attack(item)" class="skill-btn">
+                        {{ item }}
                     </div>
                     <div @click="GoBack()">Go Back</div>
-                </div>
+                <!--</div>-->
             </div>
             <div class="Playeraction Listshow2" v-if="ListOpen2">
-                <div class="item-scroll-container">
-                    <div v-for="item in list" :key="item">
-                        <div @click="choose(item)">{{ item }}</div>
+                <!--<div class="item-scroll-container">-->
+                    <div v-for="item in list" :key="item" @click="choose(item)" class="skill-btn">
+                        {{ item }}
                     </div>
                     <div @click="GoBack()">Go Back</div>
-                </div>
+                <!--</div>-->
             </div>
         </div>
     </div>
@@ -228,7 +228,7 @@ export default {
     }
 
     .image{
-        width: 300px !important;     /* 放大敵人！ */
+        width: 300px !important;
         height: 300px !important;
     }
     .Playeractionbox{
@@ -244,14 +244,12 @@ export default {
         box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
     }
     .Playerstatus{
-        float: left;
-        width: 50%;
+        flex: 1;
         height: 100%;
         text-align: left;
     }
     .Playeraction{
-        float: right;
-        width: 50%;
+        flex: 1;
         height: 100%;
         gap: 20px;
         text-align: left;
@@ -262,13 +260,7 @@ export default {
     .disappear{
         display:none;
     }
-    .item-scroll-container {
-        max-height: 200px;
-        width: 100%;
-        overflow-y: auto;
-        padding-right: 8px;
-        margin-bottom: 10px;
-    }
+
     .loop {
         margin: 8px 0;
     }
@@ -276,6 +268,38 @@ export default {
         margin-top: 10px;
         background-color: #555;
         color: white;
+    }
+  
+    .item-scroll-container > div {
+        cursor: pointer;
+        padding: 8px 24px;
+        margin: 8px 0;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background: linear-gradient(145deg, #444, #222);
+        border-radius: 16px;
+        border: 2px solid #666;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        transition: all 0.35s ease;
+        user-select: none;
+    }
+
+    .item-scroll-container > div:hover {
+        color: black !important;
+        background: #ffffff91 !important;
+        border: 2px solid #ffffff91;
+        transform: translateY(-6px);
+        z-index: 10;
+    }
+
+    .item-scroll-container {
+        max-height: 200px;
+        width: 100%;
+        overflow-y: auto;
+        padding-right: 8px;
+        margin-bottom: 10px;
     }
 
     .item-scroll-container::-webkit-scrollbar {

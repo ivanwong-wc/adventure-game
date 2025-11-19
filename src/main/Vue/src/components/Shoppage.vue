@@ -50,6 +50,7 @@ export default {
     },
     methods: {
         async GetPlayerdata() {
+            console.error('fetching player data:');
             try {
                 const response = await api.get(`/player/getCharacter`);
                 this.playerHP = response.data.hp ?? 0;
@@ -182,6 +183,33 @@ export default {
     .disappear{
         display:none;
     }
+
+    .Playeraction > div,    
+    .item-scroll-container > div {
+        cursor: pointer;
+        padding: 8px 24px;
+        margin: 8px 0;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background: linear-gradient(145deg, #444, #222);
+        border-radius: 16px;
+        border: 2px solid #666;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        transition: all 0.35s ease;
+        user-select: none;
+    }
+
+    .Playeraction > div:hover,
+    .item-scroll-container > div:hover {
+        color: black !important;
+        background: #ffffff91 !important;
+        border: 2px solid #ffffff91;
+        transform: translateY(-6px);
+        z-index: 10;
+    }
+
     .item-scroll-container {
         max-height: 200px;
         width: 100%;
