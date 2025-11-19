@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base=/static/",  
     "preview": "vite preview",
-    "build:game": "vite build --base=/static/ --outDir=../resources/static"
+    "build:game": "vite build --base=/static/ --outDir=../../../resources/static"
   },
   "dependencies": {
     "pinia": "^2.2.4",

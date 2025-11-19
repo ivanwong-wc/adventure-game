@@ -1,14 +1,12 @@
 <template>
-  <div class="top">
-    <h2>瘋狂Jamesの致富之路</h2>
-  </div>
   <div class="choose-character-page">
+    <h2 class="left">瘋狂Jamesの致富之路</h2>
     <h1>Choose Your Character</h1>
     <div v-if="loading" class="loading">Loading characters...</div>
     <div v-if="error" class="error">Error loading characters. Please try again.</div>
     <div class="character-options">
       <div class="Character1">
-        <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/knight.png"></img>
+        <img class="image" src="/Image/knight.png" alt="knight" />
         <h3>knight</h3>
         <div class="buttonset" @click.stop="selectCharacter('knight')" 
              :disabled="loading">
@@ -16,7 +14,7 @@
         </div>
       </div>
       <div class="Character2">
-        <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/Villager.png"></img>
+        <img class="image" src="/Image/Villager.png" alt="villager" />
         <h3>Villager</h3>
         <div class="buttonset" @click.stop="selectCharacter('villager')" 
              :disabled="loading">
@@ -24,7 +22,7 @@
         </div>
       </div>
       <div class="Character3">
-        <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/wizard.png"></img>
+        <img class="image" src="/Image/Wizard.png" alt="wizard" />
         <h3>Wizard</h3>
         <div class="buttonset" @click.stop="selectCharacter('wizard')" 
              :disabled="loading">
@@ -39,7 +37,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8081/api',
+  baseURL: 'http://localhost:8080/api',
   timeout: 10000
 });
 
@@ -61,42 +59,39 @@ export default {
       try {
         const response = await api.post(`/player/${character}`);
         console.log('Character selection response:', response.data);
-        this.$router.push('/Shoppage');
+        this.$router.push('/BattlePage');
         
-      } catch (error) {
-        console.error('Error selecting character:', error);
+      } catch (err) {
+        console.error('Error selecting character:', err);
       } finally {
         this.loading = false;
       }
     },
-    
-    gotosetting() {
-      this.$router.push("/setting-page");
-    }
   }
 };
 </script>
 
 <style> 
-  .body {
-    background-color:black;
+  html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    background-color: black !important;   /* 強制黑色 */
   }
   .image{
     width: 200px;
     height: 200px;
   }
-  .choose-character-page{
+  .choose-character-page {
     position: fixed;
-    top:50px;
-    left:0;
-    width:100%;
-    height:100%;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     text-align: center;
-    background-color:black;
+    background-color: black;
     color: white;
+    padding-top: 20px;
   }
   .character-options{
     margin: 40px 0 0 40px;
@@ -130,21 +125,16 @@ export default {
     position: relative;
     margin-right: 200px;
   }
-  .top{
-    margin-top: -10px;
+  .left{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: 70px;
+    background-color: black;
     display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items:center;
-    padding: 0px 16px 0px;
-    right:0;
-    left:auto;
-  }
-  .topright{
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      height: 30px;
+    align-items: center;
+    padding-left: 30px; 
+    z-index: 9999;
   }
 </style>

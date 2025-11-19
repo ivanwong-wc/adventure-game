@@ -2,7 +2,7 @@
     <div class="starting-page">
         <h1>瘋狂Jamesの致富之路</h1>
         <p>Lets go and be rich</p>
-        <router-link to="/choose-characterpage">
+        <router-link to="/ChoosePage">
             <button>Start Game</button>
         </router-link>
     </div>

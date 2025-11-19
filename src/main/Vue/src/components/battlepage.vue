@@ -1,11 +1,8 @@
 <template>
-    <div class="top">
-        <h2>瘋狂Jamesの致富之路</h2>
-        <!--<div class="topright" @click="gotosetting()"><h2>Setting</h2></div>-->
-    </div>
     <div class="Battle-page">
+        <h2 class="left">瘋狂Jamesの致富之路</h2>
         <div class="image-wrapper">
-            <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/ememy.jpeg"></img>
+            <img class="image" src="/Image/ememy.jpeg" alt="ememy" />
             <div class="smallbox">{{ message }}</div>
             <p>Enemy</p>
             <p>HP: {{ enemyHP }}</p>
@@ -30,6 +27,7 @@
                 <div class="item-scroll-container">
                     <div v-for="item in list" :key="item">
                         <div @click="attack(item)">{{ item }}</div>
+                    </div>
                     <div @click="GoBack()">Go Back</div>
                 </div>
             </div>
@@ -43,16 +41,15 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
 import axios from 'axios';
 const api = axios.create({
-    baseURL: 'http://localhost:8081/api',
+    baseURL: 'http://localhost:8080/api',
 });
 export default {
-    name: "battlepage",
+    name: "BattlePage",
     data() {
         return {
             // enemy
@@ -83,8 +80,8 @@ export default {
                 //this.enemyName = response.data.name;
                 this.enemyHP = response.data.hp;
                 //this.enemyTotalHP = response.data.totalHP;
-            } catch (error) {
-                console.error('Error fetching enemy data:', error);
+            } catch (err) {
+                console.error('Error fetching enemy data:', err);
             }
         },
         async GetPlayerdata() {
@@ -99,12 +96,9 @@ export default {
                 this.playerBuff = response.data.buff ?? 0;
                 this.Itemlist = response.data.inventory || [];
                 this.skilllist = Object.keys(response.data.skills || {});
-            } catch (error) {
-                console.error('Error fetching player data:', error);
+            } catch (err) {
+                console.error('Error fetching player data:', err);
             }
-        },
-        gotosetting() {
-            this.$router.push("/setting-page");
         },
         async attack(damage) {
             console.log("Attack button clicked, damage:", damage);
@@ -141,8 +135,8 @@ export default {
                     this.message = this.getmessage;
                 }
 
-            } catch (error) {
-                console.error('Error fetching attack data:', error);
+            } catch (err) {
+                console.error('Error fetching attack data:', err);
             }
         },
         async choose(item) {
@@ -156,8 +150,8 @@ export default {
                 this.ListOpen1 = true;
                 this.ListOpen2 = false;
                 this.message = response.data.message;
-            } catch (error) {
-                console.error('Error fetching item data:', error);
+            } catch (err) {
+                console.error('Error fetching item data:', err);
             }
         },
         showskill() {
@@ -186,27 +180,23 @@ export default {
 </script>
 
 <style> 
+    .left{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: auto;
+        height: 70px;
+        background-color: black;
+        display: flex;
+        align-items: center;
+        padding-left: 30px; 
+        z-index: 9999;
+    }
     .body {
         background-color:black;
         margin: 0;
         padding: 0;
         height: 100%;
-    }
-    .top{
-        margin-top: -10px;
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;
-        align-items:center;
-        padding: 0px 16px 0px;
-        left:auto;
-    }  
-    .topright{
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        height: 30px;
     }
 
     .Battle-page {
@@ -224,7 +214,6 @@ export default {
 
     .smallbox{
         position: absolute;
-        top: 10px;
         right: -180px;
         width: 160px;
         padding: 10px;
@@ -239,22 +228,26 @@ export default {
     }
 
     .image{
-        width: 200px;
-        height: 200px;
+        width: 300px !important;     /* 放大敵人！ */
+        height: 300px !important;
     }
     .Playeractionbox{
         border: 5px solid white;
         height: 270px;
-        width: 80%;
+        width: calc(100vw - 100px) !important;  
+        max-width: 1400px;                   
+        margin: 20px auto;   
         display: flex;
-        margin: auto;
+        box-sizing: border-box;
+        border-radius: 20px;                
+        background: rgba(20, 20, 40, 0.95);
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
     }
     .Playerstatus{
         float: left;
-        width: 40%;
+        width: 50%;
         height: 100%;
         text-align: left;
-        padding-left: 20px;
     }
     .Playeraction{
         float: right;
@@ -262,7 +255,6 @@ export default {
         height: 100%;
         gap: 20px;
         text-align: left;
-        padding-left: 20px;
     }
     .appear{
         display:block;

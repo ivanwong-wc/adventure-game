@@ -1,11 +1,10 @@
 <template>
     <div class="top">
         <h2>瘋狂Jamesの致富之路</h2>
-        <!--<div class="topright" @click="gotosetting()"><h2>Setting</h2></div>-->
     </div>
     <div class="Shop-page">
         <div class="image-wrapper">
-            <img class="image" role="text" :aria-label="$t('info')" src="@/main/Image/merchant.png"></img>
+            <img class="image" src="/Image/merchant.png" alt="商人" />
             <div class="smallbox">
                 {{ message }}
             </div>
@@ -20,7 +19,7 @@
             </div>
             <div class="Shoplist Listshow2">
                 <div class="item-scroll-container">
-                    <div v-for="(item,price) in Itemlist" :key="item">
+                    <div v-for="(price, item) in Itemlist" :key="item">
                         <div @click="Buyitem(item)">{{ item }} ({{ price }})</div>
                     </div>
                     <div @click="leaveshop">Leave the shop</div>
@@ -33,10 +32,10 @@
 <script>
 import axios from 'axios';
 const api = axios.create({
-    baseURL: 'http://localhost:8081/api',
+    baseURL: 'http://localhost:8080/api',
 });
 export default {
-    name: "Shoppage",
+    name: "ShopPage",
     data() {
         return {
             // player
@@ -56,19 +55,17 @@ export default {
                 this.playerHP = response.data.hp ?? 0;
                 this.playerMP = response.data.mp ?? 0;
                 this.playerGold = response.data.gold ?? 0;
-            } catch (error) {
-                console.error('Error fetching player data:', error);
+            } catch (err) {
+                console.error('Error fetching player data:', err);
             }
         },
-        gotosetting() {
-            this.$router.push("/setting-page");
-        },
         async ShopShow() {
+            console.error('fetching shop data:');
             try {
                 const response = await api.get(`/shop`);
                 this.Itemlist = response.data || {}; 
-            } catch (error) {
-                console.error('Error fetching shop data:', error);
+            } catch (err) {
+                console.error('Error fetching shop data:', err);
             }
         },
         async Buyitem(item) {
@@ -85,13 +82,13 @@ export default {
                 } else {
                     this.message = 'Buy ',item,' successfully!';
                 }
-            } catch (error) {
-                console.error('Error fetching item data:', error);
+            } catch (err) {
+                console.error('Error fetching item data:', err);
                 this.message = 'Buy failed. Please buy again.';
             }
         },
         leaveshop(){
-            this.$router.push("/Eventpage");
+            this.$router.push("/EventPage");
         }
     },
     mounted() {

@@ -1,11 +1,10 @@
 <template>
     <div class="top">
         <h2>瘋狂Jamesの致富之路</h2>
-        <!--<div class="topright" @click="gotosetting()"><h2>Setting</h2></div>-->
     </div>
     <div class="Battle-page">
         <div class="image-wrapper">
-            <img class="image" role="text" :aria-label="$t('info')" src="getImageSrc()"></img>
+            <img :src="currentImage" alt="event" class="event-img" />
             <div class="smallbox">{{ message.event }}</div>
         </div>
         <div class="Playeractionbox">
@@ -40,10 +39,10 @@
 <script>
 import axios from 'axios';
 const api = axios.create({
-    baseURL: 'http://localhost:8081/api',
+    baseURL: 'http://localhost:8080/api',
 });
 export default {
-    name: "battlepage",
+    name: "EventPage",
     data() {
         return {
             // enemy
@@ -76,8 +75,8 @@ export default {
                 this.playerGold = response.data.gold ?? 0;
                 this.Itemlist = response.data.inventory || [];
                 this.skilllist = Object.keys(response.data.skills || {});
-            } catch (error) {
-                console.error('Error fetching player data:', error);
+            } catch (err) {
+                console.error('Error fetching player data:', err);
             }
         },
         async showevent() {
@@ -85,8 +84,8 @@ export default {
                 const response = await api.get(`/event`);
                 this.message = response.data.event ?? '';
                 this.messagetype = response.data.key ?? ''; 
-            } catch (error) {
-                console.error('Error fetching event data:', error);
+            } catch (err) {
+                console.error('Error fetching event data:', err);
             }
         },
         async Give() {
@@ -99,26 +98,32 @@ export default {
                 this.playerGold = response.data.gold ?? 0;
                 this.ListOpen3 = false;
                 setTimeout(3000);
-                this.$router.push("/battlepage");
-            } catch (error) {
-                console.error('Error giving item:', error);
+                this.$router.push("/BattlePage");
+            } catch (err) {
+                console.error('Error giving item:', err);
             }
         },
         showitem() {
             console.log("Item button clicked");
             this.list = this.Itemlist;
             this.ListOpen2 = true;
-        }
-        getImageSrc() {
-            if (this.messagetype === 'charity') {
-                return require('@/main/Image/charity.png');
-            } else if (this.messagetype === 'merchant') {
-                return require('@/main/Image/merchant.png');
-            } else if (this.messagetype === 'treasure') {
-                return require('@/main/Image/treasure.png');
-            } else {
-                return require('@/main/Image/fairy.png');
-            }
+        },
+        setup(props) {
+            const currentImage = computed(() => {
+                switch (this.messagetype) {
+                    case 'treasure':
+                        return '/Image/treasure.png';
+                    case 'trap':
+                        return '/Image/trap.png';
+                    case 'npc':
+                        return '/Image/npc.png';
+                    default:
+                        return '/Image/event.png';
+                }
+            });
+            return {
+                currentImage,
+           };
         }
     },
     mounted() {

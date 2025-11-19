@@ -55,35 +55,6 @@
                 </configuration>
             </plugin>
 
-            <!-- 2. 前端：用系統 Node + npm install + npm run build（永不 404！） -->
-            <!--<plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                
-                <configuration>
-                    <workingDirectory>${frontend.src.dir}</workingDirectory>
-                    <skipNodeInstall>true</skipNodeInstall>
-                    <skipNpmInstall>false</skipNpmInstall>
-                    <nodeVersion>system</nodeVersion>
-                    <npmVersion>system</npmVersion>
-                </configuration>
-                <executions>
-                    
-                    <execution>
-                        <id>npm install</id>
-                        <goals><goal>npm</goal></goals>
-                        <configuration><arguments>install</arguments></configuration>
-                    </execution>
-
-                    <execution>
-                        <id>npm build</id>
-                        <goals><goal>npm</goal></goals>
-                        <phase>generate-resources</phase>
-                        <configuration><arguments>run build</arguments></configuration>
-                    </execution>
-                </executions>
-            </plugin> -->
-
             <!-- 3. 把 Vue 打包好的 dist 複製到 target/vue-dist（就是你問的那個） -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -136,7 +107,6 @@
                     <appVersion>1.0.0</appVersion>
                     <vendor>瘋狂James工作室</vendor>
                     <mainClass>com.example.adventure_game.AdventureGameApplication</mainClass>
-
                     <!-- 圖標（512x512 .ico）放在 src/main/resources/icon.ico -->
                     <icon>src/main/resources/icon.ico</icon>
 

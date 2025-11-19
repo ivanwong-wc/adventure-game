@@ -7,7 +7,7 @@
     </div>
     
     <div class="buttons">
-      <router-link to="/choose-characterpage">
+      <router-link to="/ChoosePage">
         <button class="restart-btn">Restart Game</button>
       </router-link>
       <button class="leave-btn" @click="leaveGame">Leave Game</button>

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:8081") //link to front end 
+@CrossOrigin(origins = "http://localhost:5173") //link to front end 
 public class Controller {
 
     private Player player = new Player();
