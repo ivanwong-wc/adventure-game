@@ -4,7 +4,7 @@
     </div>
     <div class="Shop-page">
         <div class="image-wrapper">
-            <img class="image" src="/Image/merchant.png" alt="商人" />
+            <img class="image" src="/image/merchant.png" alt="商人" />
             <div class="smallbox">
                 {{ message }}
             </div>
@@ -12,10 +12,12 @@
         </div>
         <div class="Playeractionbox">
             <div class="Playerstatus">
-                <p>You</p>
                 <p>HP: {{ playerHP }}</p>
                 <p>Mp: {{ playerMP }}</p>
                 <p>Gold: {{ playerGold }}</p>
+                <p>Buff: {{ playerBuff }}</p>
+                <p>Luck: {{ playerLuck }}</p>
+                <p>Attack: {{ playerAttack }}</p>
             </div>
             <div class="Shoplist Listshow2">
                 <div class="item-scroll-container">
@@ -42,8 +44,12 @@ export default {
             playerHP: 0,
             playerMP: 0,
             playerGold: 0,
+            playerBuff: '',
+            playerLuck: 0,
+            playerAttack: 0,
             // list
             Itemlist: {},
+            //message
             message: 'Welcome to the shop! What do you want to buy?',
             getmessage: '',
         };
@@ -56,6 +62,9 @@ export default {
                 this.playerHP = response.data.hp ?? 0;
                 this.playerMP = response.data.mp ?? 0;
                 this.playerGold = response.data.gold ?? 0;
+                this.playerBuff = response.data.buff ?? '';
+                this.playerLuck = response.data.luck ?? 0;
+                this.playerAttack = response.data.attack ?? 0;
             } catch (err) {
                 console.error('Error fetching player data:', err);
             }
@@ -73,15 +82,19 @@ export default {
             console.log("Chosen item/skill:", item);
             try {
                 const response = await api.post(`/shop/${item}`);
-                this.playerHP = response.data.hp;
-                this.playerMP = response.data.mp;
-                this.playerGold = response.data.gold;
-                this.Itemlist = response.data || {}; 
+                console.log('Item purchase response:', response.data);
+                this.playerHP = response.data.player.hp;
+                this.playerMP = response.data.player.mp;
+                this.playerGold = response.data.player.gold;
+                this.playerBuff = response.data.player.buff;
+                this.playerLuck = response.data.player.luck;
+                this.playerAttack = response.data.player.attack;
                 this.getmessage = response.data.message;
-                if(this.getmessage){
+                console.log('message:', this.getmessage);
+                if(this.getmessage != null){
                     this.message = this.getmessage;
                 } else {
-                    this.message = 'Buy ',item,' successfully!';
+                    this.message = 'Buy successfully!';
                 }
             } catch (err) {
                 console.error('Error fetching item data:', err);
@@ -184,7 +197,6 @@ export default {
         display:none;
     }
 
-    .Playeraction > div,    
     .item-scroll-container > div {
         cursor: pointer;
         padding: 8px 24px;
@@ -201,7 +213,6 @@ export default {
         user-select: none;
     }
 
-    .Playeraction > div:hover,
     .item-scroll-container > div:hover {
         color: black !important;
         background: #ffffff91 !important;

@@ -6,7 +6,7 @@
     <div v-if="error" class="error">Error loading characters. Please try again.</div>
     <div class="character-options">
       <div class="Character1">
-        <img class="image" src="/Image/knight.png" alt="knight" />
+        <img class="image" src="/image/knight.png" alt="knight" />
         <h3>knight</h3>
         <div class="buttonset" @click.stop="selectCharacter('knight')" 
              :disabled="loading">
@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="Character2">
-        <img class="image" src="/Image/Villager.png" alt="villager" />
+        <img class="image" src="/image/villager.png" alt="villager" />
         <h3>Villager</h3>
         <div class="buttonset" @click.stop="selectCharacter('villager')" 
              :disabled="loading">
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="Character3">
-        <img class="image" src="/Image/Wizard.png" alt="wizard" />
+        <img class="image" src="/image/wizard.png" alt="wizard" />
         <h3>Wizard</h3>
         <div class="buttonset" @click.stop="selectCharacter('wizard')" 
              :disabled="loading">
@@ -59,7 +59,7 @@ export default {
       try {
         const response = await api.post(`/player/${character}`);
         console.log('Character selection response:', response.data);
-        this.$router.push('/BattlePage');
+        this.$router.push('/ShopPage');
         
       } catch (err) {
         console.error('Error selecting character:', err);

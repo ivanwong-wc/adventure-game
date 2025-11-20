@@ -4,8 +4,14 @@
     </div>
     <div class="Battle-page">
         <div class="image-wrapper">
-            <img :src="currentImage" alt="event" class="event-img" />
-            <div class="smallbox">{{ message.event }}</div>
+            <!--<img :src="eventImage" alt="event" class="event-img" v-if="messagetype"/>
+            <img src="/image/fairy.png" alt="default" class="event-img" v-else/>-->
+            <img class="image" src="/image/charity.png" alt="charity" v-if="ischarity"/>
+            <img class="image" src="/image/fairy.png" alt="fairy" v-if="isfairy"/>
+            <img class="image" src="/image/treasure.png" alt="treasure" v-if="istreasure"/>
+            <img class="image" src="/image/merchant.png" alt="商人" v-if="ismerchant"/>
+            <div class="smallbox">{{ message }}
+            </div>
         </div>
         <div class="Playeractionbox">
             <div class="Playerstatus">
@@ -13,13 +19,13 @@
                 <p>HP: {{ playerHP }}</p>
                 <p>Mp: {{ playerMP }}</p>
                 <p>Gold: {{ playerGold }}</p>
-                <p>Gold: {{ playerGold }}</p>
+                <p>Attack: {{ playerAttack }}</p>
                 <p>Luck: {{ playerLuck }}</p>
             </div>
             <div class="Playeraction actionbuttons" v-if="!ListOpen2 && ListOpen3">
                 <div class="item-scroll-container">
                     <div @click="Give()">Do it</div>
-                    <div @click="showitem()">Item</div>
+                    <!--<div @click="showitem()">Item</div>-->
                     <div @click="goaway()">Go away</div>
                 </div>
             </div>
@@ -62,6 +68,11 @@ export default {
             // message
             message: '',
             messagetype: '',
+            //image
+            ischarity: true,
+            isfairy: false,
+            istreasure: false,
+            ismerchant: false,
         };
     },
     methods: {
@@ -82,8 +93,32 @@ export default {
         async showevent() {
             try {
                 const response = await api.get(`/event`);
+                console.log('Event data:', response.data);
                 this.message = response.data.event ?? '';
+                console.log('Event message:', this.message);
                 this.messagetype = response.data.key ?? ''; 
+                if(this.messagetype === 'charity'){
+                    this.ischarity = true;
+                    this.isfairy = false;
+                    this.istreasure = false;
+                    this.ismerchant = false;
+                } else if(this.messagetype === 'fairy'){
+                    this.ischarity = false;
+                    this.isfairy = true;
+                    this.istreasure = false;
+                    this.ismerchant = false;
+                } else if(this.messagetype === 'treasure'){
+                    this.ischarity = false;
+                    this.isfairy = false;
+                    this.istreasure = true;
+                    this.ismerchant = false;
+                } else if(this.messagetype === 'merchant'){
+                    this.ischarity = false;
+                    this.isfairy = false;
+                    this.istreasure = false;
+                    this.ismerchant = true;
+                }
+                console.log('Event type:', this.messagetype);
             } catch (err) {
                 console.error('Error fetching event data:', err);
             }
@@ -91,14 +126,16 @@ export default {
         async Give() {
             console.log("Give button clicked");
             try{
-                const response = await api.get(`/event/${messagetype}/${'true'}`);
+                const response = await api.post(`/event/${this.messagetype}/${'true'}`);
+                console.log('Give item response:', response.data);
                 this.message = response.data.message ?? '';
                 this.playerHP = response.data.playerHp ?? 0;
                 this.playerAttack = response.data.playerAttack ?? 0;
                 this.playerGold = response.data.gold ?? 0;
                 this.ListOpen3 = false;
-                setTimeout(3000);
-                this.$router.push("/BattlePage");
+                setTimeout(() => {
+                    this.$router.push("/BattlePage");
+                }, 2000);
             } catch (err) {
                 console.error('Error giving item:', err);
             }
@@ -108,27 +145,22 @@ export default {
             this.list = this.Itemlist;
             this.ListOpen2 = true;
         },
-        setup(props) {
-            const currentImage = computed(() => {
-                switch (this.messagetype) {
-                    case 'treasure':
-                        return '/Image/treasure.png';
-                    case 'trap':
-                        return '/Image/trap.png';
-                    case 'npc':
-                        return '/Image/npc.png';
-                    default:
-                        return '/Image/event.png';
-                }
-            });
-            return {
-                currentImage,
-           };
-        }
     },
     mounted() {
         this.GetPlayerdata();
         this.showevent();
+    },
+    computed: {
+        eventImag1e() {
+            const map = {
+                charity: '/image/charity.png',
+                merchant: '/image/merchant.png',
+                treasure: '/image/treasure.png',
+                fairy: '/image/fairy.png'
+            };
+            const src = map[this.messagetype];
+            return src;
+        }
     },
 };
 </script>

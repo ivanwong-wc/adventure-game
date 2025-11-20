@@ -2,7 +2,7 @@
     <div class="Battle-page">
         <h2 class="left">瘋狂Jamesの致富之路</h2>
         <div class="image-wrapper">
-            <img class="image" src="/Image/ememy.jpeg" alt="ememy" />
+            <img class="image" src="/image/ememy.jpeg" alt="ememy" />
             <div class="smallbox">{{ message }}</div>
             <p>Enemy</p>
             <p>HP: {{ enemyHP }}</p>
@@ -24,20 +24,20 @@
                 </div>
             </div>
             <div class="Playeraction Listshow1" v-if="ListOpen1">
-                <!--<div class="item-scroll-container">-->
+                <div class="item-scroll-container">
                     <div v-for="item in list" :key="item" @click="attack(item)" class="skill-btn">
                         {{ item }}
                     </div>
                     <div @click="GoBack()">Go Back</div>
-                <!--</div>-->
+                </div>
             </div>
             <div class="Playeraction Listshow2" v-if="ListOpen2">
-                <!--<div class="item-scroll-container">-->
+                <div class="item-scroll-container">
                     <div v-for="item in list" :key="item" @click="choose(item)" class="skill-btn">
                         {{ item }}
                     </div>
                     <div @click="GoBack()">Go Back</div>
-                <!--</div>-->
+                </div>
             </div>
         </div>
     </div>
@@ -104,6 +104,7 @@ export default {
             console.log("Attack button clicked, damage:", damage);
             try {
                 const response = await api.post(`/attack/${damage}`);
+                console.log("Attack response data:", response.data);
                 this.playerHP = response.data.playerHp;
                 this.playerMP = response.data.playerMp;
                 this.enemyHP = response.data.enemyHp;
@@ -113,18 +114,20 @@ export default {
                 this.ListOpen2 = false;
                 this.playerround = false;
                 if(this.enemyHP < 1){
+                    this.ListOpen3 = false;
                     console.log("User Win!!!");
-                    message = "Player kill the enemy. What a perfect victory! You Win! You get: ",getGold;
-                    ListOpen3 = false;
-                    setTimeout(3000);
-                    this.$router.push("/WinPage");
+                    this.message = "Player kill the enemy. What a perfect victory! You Win! You get: ",this.getGold;
+                    setTimeout(() => {
+                        this.$router.push("/WinPage");
+                    }, 2000);
                     return;
                 }else if(this.playerHP < 1){
                     console.log("User lose!!!");
-                    message = "The enemy killed Player. What a heroic sacrifice. You Lose! Going to End Page.";
-                    ListOpen3 = false;
-                    setTimeout(3000);
-                    this.$router.push("/EndPage");
+                    this.message = "The enemy killed Player. What a heroic sacrifice. You Lose! Going to End Page.";
+                    this.ListOpen3 = false;
+                    setTimeout(() => {
+                        this.$router.push("/EndPage");
+                    }, 2000);
                     return;
                 }
                 if(this.getmessage == "hurt"){
@@ -292,32 +295,6 @@ export default {
         border: 2px solid #ffffff91;
         transform: translateY(-6px);
         z-index: 10;
-    }
-
-    .item-scroll-container {
-        max-height: 200px;
-        width: 100%;
-        overflow-y: auto;
-        padding-right: 8px;
-        margin-bottom: 10px;
-    }
-
-    .item-scroll-container::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    .item-scroll-container::-webkit-scrollbar-track {
-        background: #333;
-        border-radius: 4px;
-    }
-
-    .item-scroll-container::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-    }
-
-    .item-scroll-container::-webkit-scrollbar-thumb:hover {
-        background: #aaa;
     }
 
 </style>
