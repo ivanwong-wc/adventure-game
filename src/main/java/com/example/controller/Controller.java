@@ -70,12 +70,12 @@ public class Controller {
 
     @GetMapping("/event")
     public Map<String, String> showEvent() {
-    String eventKey = Event.getRandomEvent();  
-    return Map.of(
-        "key", eventKey,
-        "event", Event.eventList.get(eventKey)
-    );
-}
+        String eventKey = Event.getRandomEvent();
+        return Map.of(
+            "key", eventKey,
+            "event", Event.eventList.get(eventKey)
+        );
+    }
 
     @PostMapping("/event/{key}/{choice}")
     public EventResponse makeChoice(@PathVariable String key, @PathVariable String choice) {
